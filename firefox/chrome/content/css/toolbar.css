@@ -1,0 +1,12 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#foxtesterbutton-1,
+#wrapper-foxtesterbutton-1
+  {list-style-image: url("chrome://foxtester/content/images/toolbarbutton.png");}
+
+/* common style for all custom buttons */
+.foxtesterbutton
+  {-moz-image-region: rect( 0px 24px 24px  0px);}
+
+[iconsize="small"] .foxtesterbutton
+  {-moz-image-region: rect( 0px 40px 16px 24px);}

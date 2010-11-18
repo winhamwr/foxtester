@@ -1,0 +1,6 @@
+content foxtester chrome/content/
+locale foxtester en-US chrome/locale/en-US/
+locale foxtester pt-BR chrome/locale/pt-BR/
+
+overlay chrome://browser/content/browser.xul chrome://foxtester/content/overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://foxtester/content/css/toolbar.css

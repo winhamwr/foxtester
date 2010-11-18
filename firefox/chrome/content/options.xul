@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://foxtester/locale/foxtester.dtd">
+
+<prefwindow id="foxtester-prefs" title="&FoxTesterPreferences;" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript" src="chrome://foxtester/content/scripts/functions-options.js"/>
+    
+    <stringbundleset id="strbundles">
+	<stringbundle id="foxtesterstrings" src="chrome://foxtester/locale/strings.properties"/>
+    </stringbundleset>
+
+    <prefpane id="foxtester-pref-pane" flex="1">
+	<preferences>
+	    <preference id="pref_algorithm" name="extensions.foxtester.algorithm" type="string"/>
+	    <preference id="pref_watchedfolder" name="extensions.foxtester.watchedfolder" type="string"/>
+	    <preference id="pref_pluginfolder" name="extensions.foxtester.pluginfolder" type="string"/>
+	    <preference id="pref_terminal" name="extensions.foxtester.terminal" type="string"/>
+	</preferences>
+	<vbox>
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<label value="&WatchedFolder;: " /> 
+		<textbox preference="pref_watchedfolder" id="watchedfolder" readonly="true" size="30"/>
+		<vbox>
+		    <image src="images/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
+		</vbox>
+	    </hbox>
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<label value="&PluginFolder;: " /> 
+		<textbox preference="pref_pluginfolder" id="pluginfolder" readonly="true" size="30"/>
+		<vbox>
+		    <image src="images/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
+		</vbox>
+	    </hbox>
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<label value="&Terminal;: " /> 
+		<textbox preference="pref_terminal" id="terminal" size="30"/>
+		<vbox>
+		    <image src="images/search_medium.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
+		</vbox>
+	    </hbox>
+	    <spacer height="10" flex="0"/>
+	    <hbox>
+		<label value="&DefaultCheckSum;" /> 
+		<menulist preference="pref_algorithm" id="algorithm" height="27">
+		    <menupopup>
+			<menuitem label="MD5" value="md5" selected="true"/>
+			<menuitem label="SHA-1" value="sha1"/>
+		    </menupopup>
+		</menulist>
+	    </hbox>
+	    <spacer height="20" flex="0"/>
+	</vbox>
+    </prefpane>
+</prefwindow>

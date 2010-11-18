@@ -1,0 +1,19 @@
+<!ENTITY Algorithm "Algorítmo">
+<!ENTITY Browse "Navegar Diretório FTP">
+<!ENTITY CheckSelected "Checar Arquivo">
+<!ENTITY Checksum "Checksum">
+<!ENTITY DefaultCheckSum "Algorítimo Padrão">
+<!ENTITY FoxTesterPreferences "Preferências FoxTester">
+<!ENTITY FoxTesterTitle "FoxTester">
+<!ENTITY InstallSelected "Instalar">
+<!ENTITY LaunchSelected "Lançar">
+<!ENTITY MakeDefault "Tornar Padrão">
+<!ENTITY PluginFolder "Pasta de Plugins">
+<!ENTITY Preferences "Preferências">
+<!ENTITY RemoveSelected "Apagar">
+<!ENTITY RevertDefault "Reverter para Original">
+<!ENTITY SelectFolder "Selecionar Pasta">
+<!ENTITY SelectProgram "Selecionar Programa">
+<!ENTITY Terminal "Caminho do Console">
+<!ENTITY UninstallSelected "Desistalar">
+<!ENTITY WatchedFolder "Pasta Monitorada">

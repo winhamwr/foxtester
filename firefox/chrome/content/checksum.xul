@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://foxtester/locale/foxtester.dtd">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="checksum"
+  title="&CheckSelected;"
+  ondialogaccept="return onOK();"
+  onload="onLoad();"
+  persist="screenX screenY width height">
+
+    <script>
+	<![CDATA[
+	    function onLoad() {
+		document.getElementById("newhash").value = window.arguments[0].inn.newhash;
+		document.getElementById("newalgorithm").value = window.arguments[0].inn.newalgorithm;
+	    }
+
+	    function onOK() {
+		window.arguments[0].out = {newhash:document.getElementById("newhash").value,
+		newalgorithm:document.getElementById("newalgorithm").value};
+		return true;
+	    }
+	]]>
+    </script>
+
+    <vbox flex="0">
+	<spacer height="10" flex="0"/>
+	    <hbox flex="0">
+		<label value="&Checksum;:"/>
+		<textbox id="newhash" size="32"/>
+		<label value="&Algorithm;:"/>
+		<menulist id="newalgorithm" height="27">
+		    <menupopup>
+			<menuitem label="MD5" value="md5" selected="true"/>
+			<menuitem label="SHA-1" value="sha1"/>
+		    </menupopup>
+		</menulist>
+	    </hbox>
+	<spacer height="10" flex="0"/>
+    </vbox>
+</dialog>

@@ -1,14 +1,5 @@
 var foxtesterInterface = {
 
-    shellQuote: function() {//escape paths with spaces and special characters
-
-	var path = Array.join(arguments, '');
-	// to quote a single quote inside a single-quoted string,
-	// we need to break out of the string, escape the single quote,
-	// then re-enter the string: http://tinyurl.com/4or3fx
-	return "'" + path.replace(/'/g, "'\\''") + "'";
-    },
-
     cleanUpTempFiles: function () {//delete temporary files
 
 	var script = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -679,14 +670,13 @@ var foxtesterInterface = {
 	    //declare command line to create new profile
 	    var thirdline = "firefox -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
 	    //declare command line to change dir to installation folder
-	    var fourthline = "cd "+this.shellQuote(installfolder.path);
-	    //decçare command to extract source file
-	    var fifthline = "tar -xvjf "+this.shellQuote(sourcefile.path);
+	    var fourthline = "cd \'"+installfolder.path+"\'";
+	    //declare command to extract source file
+	    var fifthline = "tar -xvjf \'"+sourcefile.path+"\'";
 	    //declare commadn line to change dir to home
 	    var sixthline = "cd";
 	    //declare command line to copy plugins to new installation folder
-	    // '/foo/bar baz'/*.so expands correctly in bash (and zsh)
-	    var seventhline = "cp "+this.shellQuote(pluginfolder.path)+"/*.so "+this.shellQuote(installfolder.path, "/firefox/plugins/");
+	    var seventhline = "rm -fr \'"+installfolder.path+"/firefox/plugins/\' && ln -s \'"+pluginfolder.path+"\' \'"+installfolder.path+"/firefox/plugins\'";
 
 	    //write command lines to temporary script
 	    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -792,7 +782,7 @@ var foxtesterInterface = {
 	if(tempscript.exists() && !tempscript.isDirectory() && installfolder.exists() && installfolder.isDirectory()){//check if script and install folde exists
 
 	    //declare command line
-	    var commandline = this.shellQuote(installfolder.path, "/firefox/firefox")+" -P -no-remote "+this.shellQuote(profilename);
+	    var commandline = "\'"+installfolder.path+"/firefox/firefox\' -P -no-remote \""+profilename+"\"";
 
 	    //write commands to script
 	    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -821,6 +811,10 @@ var foxtesterInterface = {
 	//declare foldername based on file name
 	var installfoldername = aFile.replace(/\.tar\.bz2/,"");
 	var installfoldername = installfoldername.replace(/\./g,"-");
+	//declare basic shell command lines
+	var bashline = "#!/bin/bash";
+	var newline = "\n";
+
 	//initiate install folder
 	var installfolder = Components.classes['@mozilla.org/file/directory_service;1']
 		.getService(Components.interfaces.nsIProperties)
@@ -828,8 +822,49 @@ var foxtesterInterface = {
 	installfolder.append("foxtester");
 	installfolder.append("install");
 	installfolder.append(installfoldername);
-	if(installfolder.exists() && installfolder.isDirectory()) {//remove if exists
-	    installfolder.remove(true);
+
+	//remove and recreate temporary script
+	var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
+		.getService(Components.interfaces.nsIProperties)
+		.get("ProfD", Components.interfaces.nsIFile);
+	tempscript.append("extensions");
+	tempscript.append("foxtester@lovinglinux.megabyet.net");
+	tempscript.append("chrome");
+	tempscript.append("content");
+	tempscript.append("tmp");
+	tempscript.append("foxtester.sh");
+	if (tempscript.exists()) {
+	    tempscript.remove(false);
+	}
+	tempscript.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+
+	if(tempscript.exists() && !tempscript.isDirectory() && installfolder.exists() && installfolder.isDirectory()){//check if script and install folder exists
+
+	    //declare command line
+	    var firstline = "unlink \'"+installfolder.path+"/firefox/plugins\'";
+	    var secondline = "rm -fr \'"+installfolder.path+"\'";
+
+	    //write commands to script
+	    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+		    .createInstance(Components.interfaces.nsIFileOutputStream);
+	    foStream.init(tempscript, 0x02 | 0x10 , 0777, 0);
+	    var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+		    .createInstance(Components.interfaces.nsIConverterOutputStream);
+	    converter.init(foStream, "UTF-8", 0, 0);
+	    converter.writeString(bashline);
+	    converter.writeString(newline);
+	    converter.writeString(newline);
+	    converter.writeString(firstline);
+	    converter.writeString(newline);
+	    converter.writeString(secondline);
+	    converter.close();
+
+	    //execute script
+	    var process = Components.classes['@mozilla.org/process/util;1']
+		    .createInstance(Components.interfaces.nsIProcess);
+	    process.init(tempscript);
+	    var arguments = [];
+	    process.run(false, arguments, arguments.length);
 	}
 
 	//declare profile name based on file name
@@ -1042,13 +1077,13 @@ var foxtesterInterface = {
 	    if(tempscript.exists() && !tempscript.isDirectory() && pluginfolder.exists() && pluginfolder.isDirectory() && sourcefile.exists() && !sourcefile.isDirectory()){//check everything exists
 
 		//declare command line to change dir to installation folder
-		var firstline = "cd "+this.shellQuote(permanentfolder.path)+" && sudo rm -fr "+this.shellQuote(permanentfolder.path, "/firefox");
-		//decçare command to extract source file
-		var secondline = "sudo tar -xvjf "+this.shellQuote(sourcefile.path);
+		var firstline = "cd \'"+permanentfolder.path+"\' && sudo rm -fr \'"+permanentfolder.path+"/firefox\'";
+		//declare command to extract source file
+		var secondline = "sudo tar -xvjf \'"+sourcefile.path+"\'";
 		//declare command line to copy plugins to new installation folder
-		var thirdline = "sudo rm -fr "+this.shellQuote(permanentfolder.path, "/firefox/plugins")+" && sudo ln -s "+this.shellQuote(pluginfolder.path)+" "+this.shellQuote(permanentfolder.path, "/firefox/plugins");
+		var thirdline = "sudo rm -fr \'"+permanentfolder.path+"/firefox/plugins\' && sudo ln -s \'"+pluginfolder.path+"\' \'"+permanentfolder.path+"/firefox/plugins\'";
 		//declare command line to copy new firefox executable
-		var fourthline = "sudo dpkg-divert --divert "+this.shellQuote(localbinfile.path, "/firefox.ubuntu")+" --rename "+this.shellQuote(localbinfile.path, "/firefox")+" && sudo ln -s "+this.shellQuote(permanentfolder.path, "/firefox/firefox")+" "+this.shellQuote(localbinfile.path, "/firefox");
+		var fourthline = "sudo dpkg-divert --divert \'"+localbinfile.path+"/firefox.ubuntu\' --rename \'"+localbinfile.path+"/firefox\' && sudo ln -s \'"+permanentfolder.path+"/firefox/firefox\' \'"+localbinfile.path+"/firefox\'";
 
 		//write command lines to temporary script
 		var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -1077,7 +1112,7 @@ var foxtesterInterface = {
 		    var process = Components.classes['@mozilla.org/process/util;1']
 			    .createInstance(Components.interfaces.nsIProcess);
 		    process.init(terminal);
-		    var arguments = ["-e",tempscript.path];
+		    var arguments = ["-e","'"+tempscript.path+"'"];
 		    process.run(false, arguments, arguments.length);
 
 		    //change system version preference
@@ -1157,7 +1192,8 @@ var foxtesterInterface = {
 	    if(tempscript.exists() && !tempscript.isDirectory() && permanentfolder.exists() && permanentfolder.isDirectory() && localbinfile.exists() && !localbinfile.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){//check everything exists
 
 		//declare command line to delete files
-		var firstline = "sudo rm -fr "+this.shellQuote(permanentfolder.path)+" && sudo rm -f "+this.shellQuote(localbinfile.path)+" && sudo dpkg-divert --rename --remove "+this.shellQuote(localbinfile.path);
+		var firstline = "sudo unlink \'"+permanentfolder.path+"/firefox/plugins\'";
+		var secondline = "sudo rm -fr \'"+permanentfolder.path+"\' && sudo rm -f \'"+localbinfile.path+"\' && sudo dpkg-divert --rename --remove \'"+localbinfile.path+"\'";
 
 		//write command lines to temporary script
 		var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -1173,6 +1209,8 @@ var foxtesterInterface = {
 		converter.writeString(newline);
 		converter.writeString(firstline);
 		converter.writeString(newline);
+		converter.writeString(secondline);
+		converter.writeString(newline);
 		converter.writeString(endline);
 		converter.close();
 
@@ -1180,7 +1218,7 @@ var foxtesterInterface = {
 		    var process = Components.classes['@mozilla.org/process/util;1']
 			    .createInstance(Components.interfaces.nsIProcess);
 		    process.init(terminal);
-		    var arguments = ["-e",tempscript.path];
+		    var arguments = ["-e","'"+tempscript.path+"'"];
 		    process.run(false, arguments, arguments.length);
 
 		    //change system version preference

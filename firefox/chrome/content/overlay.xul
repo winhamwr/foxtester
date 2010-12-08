@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://foxtester/content/css/toolbar.css" type="text/css" ?>
+<?xml-stylesheet href="chrome://foxtester/skin/toolbar.css" type="text/css" ?>
 
 <!DOCTYPE overlay SYSTEM "chrome://foxtester/locale/foxtester.dtd">
 
@@ -16,14 +16,14 @@
     </window>
     
     <toolbarpalette id="BrowserToolbarPalette">
-	<toolbarbutton id="foxtesterbutton-1" label="&FoxTesterTitle;" tooltiptext="&FoxTesterTitle;" onclick="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional foxtesterbutton"/>
+	<toolbarbutton id="foxtester-toolbar-button" label="&FoxTesterTitle;" tooltiptext="&FoxTesterTitle;" onclick="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
     </toolbarpalette>
     
     <popup id="contentAreaContextMenu">
-	<menu id="foxtester-contextmenu" label="&FoxTesterTitle;" class="menu-iconic" image="chrome://foxtester/content/images/logo_small.png" onpopupshowing="foxtesterInterface.showHideMenus();">
+	<menu id="foxtester-contextmenu" label="&FoxTesterTitle;" class="menu-iconic" image="chrome://foxtester/skin/toolbar-small.png" onpopupshowing="foxtesterInterface.showHideMenus();">
 	    <menupopup>
-		<menuitem id="foxtester-browse" label="&Browse;" class="menuitem-iconic" image="chrome://foxtester/content/images/search_small.png" oncommand="foxtesterInterface.browseMozilla();"/>
-		<menu id="foxtester-check" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/content/images/check_small.png">
+		<menuitem id="foxtester-browse" label="&Browse;" class="menuitem-iconic" image="chrome://foxtester/skin/search_small.png" oncommand="foxtesterInterface.browseMozilla();"/>
+		<menu id="foxtester-check" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/skin/check_small.png">
 		    <menupopup id="foxtester-check-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE checksum='no' ORDER BY package</query>
@@ -33,7 +33,7 @@
 			</template>
 		    </menupopup>
 		</menu>
-		<menu id="foxtester-check-manual" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/content/images/check_small.png">
+		<menu id="foxtester-check-manual" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/skin/check_small.png">
 		    <menupopup id="foxtester-check-manual-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE checksum='no' ORDER BY package</query>
@@ -43,7 +43,7 @@
 			</template>
 		    </menupopup>
 		</menu>
-		<menu id="foxtester-install" label="&InstallSelected;" class="menu-iconic" image="chrome://foxtester/content/images/add_small.png">
+		<menu id="foxtester-install" label="&InstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/add_small.png">
 		    <menupopup id="foxtester-install-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE installed='no' ORDER BY package</query>
@@ -53,7 +53,7 @@
 			</template>
 		    </menupopup>
 		</menu>
-		<menu id="foxtester-launch" label="&LaunchSelected;" class="menu-iconic" image="chrome://foxtester/content/images/play_small.png">
+		<menu id="foxtester-launch" label="&LaunchSelected;" class="menu-iconic" image="chrome://foxtester/skin/play_small.png">
 		    <menupopup id="foxtester-launch-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
@@ -64,7 +64,7 @@
 		    </menupopup>
 		</menu>
 		<menuseparator id="foxtester-uninstall-separator"/>
-		<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/content/images/delete_small.png">
+		<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
 		    <menupopup id="foxtester-uninstall-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
@@ -74,7 +74,7 @@
 			</template>
 		    </menupopup>
 		</menu>
-		<menu id="foxtester-remove" label="&RemoveSelected;" class="menu-iconic" image="chrome://foxtester/content/images/delete_small.png">
+		<menu id="foxtester-remove" label="&RemoveSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
 		    <menupopup id="foxtester-remove-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE installed='no' ORDER BY package</query>
@@ -85,7 +85,7 @@
 		    </menupopup>
 		</menu>
 		<menuseparator id="foxtester-default-separator"/>
-		<menu id="foxtester-make-default" label="&MakeDefault;" class="menu-iconic" image="chrome://foxtester/content/images/warning_small.png">
+		<menu id="foxtester-make-default" label="&MakeDefault;" class="menu-iconic" image="chrome://foxtester/skin/warning_small.png">
 		    <menupopup id="foxtester-make-default-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
 			<template>
 			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
@@ -95,9 +95,9 @@
 			</template>
 		    </menupopup>
 		</menu>
-		<menuitem id="foxtester-revert-default" label="&RevertDefault;" class="menuitem-iconic" image="chrome://foxtester/content/images/revert_small.png" oncommand="foxtesterInterface.revertDefault();"/>	
+		<menuitem id="foxtester-revert-default" label="&RevertDefault;" class="menuitem-iconic" image="chrome://foxtester/skin/revert_small.png" oncommand="foxtesterInterface.revertDefault();"/>	
 		<menuseparator id="foxtester-prefs-separator"/>
-		<menuitem id="foxtester-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://foxtester/content/images/settings_small.png" oncommand="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');"/>
+		<menuitem id="foxtester-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://foxtester/skin/settings_small.png" oncommand="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');"/>
 	    </menupopup>
 	</menu>
     </popup>

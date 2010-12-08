@@ -24,7 +24,7 @@
 		<label value="&WatchedFolder;: " /> 
 		<textbox preference="pref_watchedfolder" id="watchedfolder" readonly="true" size="30"/>
 		<vbox>
-		    <image src="images/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
+		    <image src="chrome://foxtester/skin/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
 		</vbox>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
@@ -32,7 +32,7 @@
 		<label value="&PluginFolder;: " /> 
 		<textbox preference="pref_pluginfolder" id="pluginfolder" readonly="true" size="30"/>
 		<vbox>
-		    <image src="images/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
+		    <image src="chrome://foxtester/skin/search_medium.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
 		</vbox>
 	    </hbox>
 	    <spacer height="10" flex="0"/>
@@ -40,7 +40,7 @@
 		<label value="&Terminal;: " /> 
 		<textbox preference="pref_terminal" id="terminal" size="30"/>
 		<vbox>
-		    <image src="images/search_medium.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
+		    <image src="chrome://foxtester/skin/search_medium.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
 		</vbox>
 	    </hbox>
 	    <spacer height="10" flex="0"/>

@@ -56,7 +56,7 @@ var foxtesterFirstrun = {
 	    if (firstrun){//actions specific for first installation
 
 		var navbar = document.getElementById("nav-bar");
-		var newset = navbar.currentSet + ",foxtesterbutton-1";
+		var newset = navbar.currentSet + ",foxtester-toolbar-button";
 		navbar.currentSet = newset;
 		navbar.setAttribute("currentset", newset );
 		document.persist("nav-bar", "currentset");

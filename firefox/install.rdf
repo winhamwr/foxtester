@@ -11,8 +11,7 @@
 	<em:description>Install and launch multiple versions of Firefox while using the default installation and without affecting the default user profile.</em:description>
 	<em:creator>lovinglinux</em:creator>
 	<em:contributor>chocolateboy</em:contributor>
-	<em:homepageURL>http://lovinglinux.megabyet.net/?page_id=677</em:homepageURL>
-	<em:iconURL>chrome://foxtester/content/images/logo_large.png</em:iconURL>
+	<em:homepageURL>http://www.webgapps.org/index.php/addons/foxtester</em:homepageURL>
 	<em:targetApplication>
 	    <Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>

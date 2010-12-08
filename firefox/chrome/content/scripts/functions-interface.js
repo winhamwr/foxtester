@@ -1192,7 +1192,7 @@ var foxtesterInterface = {
 	    if(tempscript.exists() && !tempscript.isDirectory() && permanentfolder.exists() && permanentfolder.isDirectory() && localbinfile.exists() && !localbinfile.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){//check everything exists
 
 		//declare command line to delete files
-		var firstline = "sudo unlink \'"+permanentfolder.path+"/firefox/plugins\'";
+		var firstline = "sudo unlink \'"+permanentfolder.path+"/plugins\'";
 		var secondline = "sudo rm -fr \'"+permanentfolder.path+"\' && sudo rm -f \'"+localbinfile.path+"\' && sudo dpkg-divert --rename --remove \'"+localbinfile.path+"\'";
 
 		//write command lines to temporary script

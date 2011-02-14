@@ -380,7 +380,7 @@ var foxtesterInterface = {
 		    //alert user that checksum match
 		    var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 			    .getService(Components.interfaces.nsIAlertsService);
-		    alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+		    alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 		    messagetitle, message,
 		    false, "", null);
 		}
@@ -410,7 +410,7 @@ var foxtesterInterface = {
 			//alert user that checksum match
 			var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 				.getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+			alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 			messagetitle, message,
 			false, "", null);
 		    }
@@ -537,7 +537,7 @@ var foxtesterInterface = {
 		    //alert user
 		    var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 			    .getService(Components.interfaces.nsIAlertsService);
-		    alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+		    alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 		    messagetitle, message,
 		    false, "", null);
 		}
@@ -567,7 +567,7 @@ var foxtesterInterface = {
 			//alert user that checksum match
 			var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 				.getService(Components.interfaces.nsIAlertsService);
-			alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+			alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 			messagetitle, message,
 			false, "", null);
 		    }
@@ -733,7 +733,7 @@ var foxtesterInterface = {
 	    //alert user
 	    var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 		    .getService(Components.interfaces.nsIAlertsService);
-	    alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+	    alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 	    messagetitle, message,
 	    false, "", null);
 	}
@@ -944,7 +944,7 @@ var foxtesterInterface = {
 	//alert user
 	var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 		.getService(Components.interfaces.nsIAlertsService);
-	alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+	alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 	messagetitle, message,
 	false, "", null);
     },
@@ -992,7 +992,7 @@ var foxtesterInterface = {
 	//alert user
 	var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
 		.getService(Components.interfaces.nsIAlertsService);
-	alertsService.showAlertNotification("chrome://foxtester/skin/icon.png",
+	alertsService.showAlertNotification("chrome://foxtester/skin/icon32.png",
 	messagetitle, message,
 	false, "", null);
     },

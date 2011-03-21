@@ -323,7 +323,7 @@ var foxtesterInterface = {
 	    sourcefile.initWithPath(watchedfolder);
 	    sourcefile.append(aFile);
 
-	    if (sourcefile.exists) {//if file exists then excecute function
+	    if (sourcefile.exists()) {//if file exists then excecute function
 
 		//read selected file
 		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]           
@@ -481,7 +481,7 @@ var foxtesterInterface = {
 	    sourcefile.initWithPath(watchedfolder);
 	    sourcefile.append(aFile);
 
-	    if (sourcefile.exists) {//if file exists then excecute function
+	    if (sourcefile.exists()) {//if file exists then excecute function
 
 		//read selected file
 		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"]           

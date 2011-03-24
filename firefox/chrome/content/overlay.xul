@@ -5,100 +5,58 @@
 
 <overlay id="foxtester-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    <script type="application/x-javascript" src="chrome://foxtester/content/scripts/functions-firstrun.js"/>
-    <script type="application/x-javascript" src="chrome://foxtester/content/scripts/functions-interface.js"/>
-    <script type="application/x-javascript" src="chrome://foxtester/content/scripts/functions-observer.js"/>
+	<script type="application/x-javascript" src="chrome://foxtester/content/scripts/firstrun.js"/>
+	<script type="application/x-javascript" src="chrome://foxtester/content/scripts/interface.js"/>
+	<script type="application/x-javascript" src="chrome://foxtester/content/scripts/observer.js"/>
     
-    <window id="main-window">
-	<stringbundleset id="strbundles">
-	    <stringbundle id="foxtesterstrings" src="chrome://foxtester/locale/strings.properties"/>
-	</stringbundleset>
-    </window>
+	<window id="main-window">
+		<stringbundleset id="foxtesterstrbundles">
+			<stringbundle id="foxtesterstrings" src="chrome://foxtester/locale/strings.properties"/>
+		</stringbundleset>
+	</window>
     
-    <toolbarpalette id="BrowserToolbarPalette">
-	<toolbarbutton id="foxtester-toolbar-button" label="&FoxTesterTitle;" tooltiptext="&FoxTesterTitle;" onclick="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
-    </toolbarpalette>
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="foxtester-toolbar-button" label="&FoxTesterTitle;" tooltiptext="&FoxTesterTitle;" popup="foxtester-contextmenu" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+	</toolbarpalette>
     
-    <popup id="contentAreaContextMenu">
-	<menu id="foxtester-contextmenu" label="&FoxTesterTitle;" class="menu-iconic" image="chrome://foxtester/skin/toolbar-small.png" onpopupshowing="foxtesterInterface.showHideMenus();">
-	    <menupopup>
-		<menuitem id="foxtester-browse" label="&Browse;" class="menuitem-iconic" image="chrome://foxtester/skin/search_small.png" oncommand="foxtesterInterface.browseMozilla();"/>
-		<menu id="foxtester-check" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/skin/check_small.png">
-		    <menupopup id="foxtester-check-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE checksum='no' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.checkSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menu id="foxtester-check-manual" label="&CheckSelected;" class="menu-iconic" image="chrome://foxtester/skin/check_small.png">
-		    <menupopup id="foxtester-check-manual-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE checksum='no' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.checkManualSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menu id="foxtester-install" label="&InstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/add_small.png">
-		    <menupopup id="foxtester-install-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE installed='no' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.installSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menu id="foxtester-launch" label="&LaunchSelected;" class="menu-iconic" image="chrome://foxtester/skin/play_small.png">
-		    <menupopup id="foxtester-launch-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.launchSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menuseparator id="foxtester-uninstall-separator"/>
-		<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
-		    <menupopup id="foxtester-uninstall-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.uninstallSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menu id="foxtester-remove" label="&RemoveSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
-		    <menupopup id="foxtester-remove-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE installed='no' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.removeSelected(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menuseparator id="foxtester-default-separator"/>
-		<menu id="foxtester-make-default" label="&MakeDefault;" class="menu-iconic" image="chrome://foxtester/skin/warning_small.png">
-		    <menupopup id="foxtester-make-default-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
-			<template>
-			    <query>SELECT package FROM downloads WHERE installed='yes' ORDER BY package</query>
-			    <action>
-				<menuitem uri="?" label="?package" value="?package" oncommand="foxtesterInterface.makeDefault(value);"/>
-			    </action>
-			</template>
-		    </menupopup>
-		</menu>
-		<menuitem id="foxtester-revert-default" label="&RevertDefault;" class="menuitem-iconic" image="chrome://foxtester/skin/revert_small.png" oncommand="foxtesterInterface.revertDefault();"/>	
-		<menuseparator id="foxtester-prefs-separator"/>
-		<menuitem id="foxtester-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://foxtester/skin/settings_small.png" oncommand="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');"/>
-	    </menupopup>
-	</menu>
-    </popup>
+	<popupset>
+		<menupopup id="foxtester-contextmenu" onpopupshowing="foxtesterInterface.showHideMenus();">
+			<menuitem id="foxtester-browse" label="&Browse;" class="menuitem-iconic" image="chrome://foxtester/skin/search_small.png" oncommand="foxtesterInterface.browseMozilla();"/>
+			<menu id="foxtester-install" label="&InstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/add_small.png">
+				<menupopup id="foxtester-install-selected">
+					<vbox id="foxtester-install-selected-vbox">
+					</vbox>
+				</menupopup>
+			</menu>
+			<menu id="foxtester-launch" label="&LaunchSelected;" class="menu-iconic" image="chrome://foxtester/skin/play_small.png">
+				<menupopup id="foxtester-launch-selected">
+					<vbox id="foxtester-launch-selected-vbox">
+					</vbox>
+				</menupopup>
+			</menu>
+			<menuseparator id="foxtester-uninstall-separator"/>
+			<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
+				<menupopup id="foxtester-uninstall-selected">
+					<vbox id="foxtester-uninstall-selected-vbox">
+					</vbox>
+				</menupopup>
+			</menu>
+			<menu id="foxtester-remove" label="&RemoveSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete_small.png">
+				<menupopup id="foxtester-remove-selected">
+					<vbox id="foxtester-remove-selected-vbox">
+					</vbox>
+				</menupopup>
+			</menu>
+			<menuseparator id="foxtester-default-separator"/>
+			<menu id="foxtester-make-default" label="&MakeDefault;" class="menu-iconic" image="chrome://foxtester/skin/warning_small.png">
+				<menupopup id="foxtester-make-default-selected" datasources="profile:foxtester.sqlite" ref="*" querytype="storage">
+					<vbox id="foxtester-make-default-selected-vbox">
+					</vbox>
+				</menupopup>
+			</menu>
+			<menuitem id="foxtester-revert-default" label="&RevertDefault;" class="menuitem-iconic" image="chrome://foxtester/skin/revert_small.png" oncommand="foxtesterInterface.revertDefault();"/>	
+			<menuseparator id="foxtester-prefs-separator"/>
+			<menuitem id="foxtester-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://foxtester/skin/settings_small.png" oncommand="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');"/>
+		</menupopup>
+	</popupset>
 </overlay>

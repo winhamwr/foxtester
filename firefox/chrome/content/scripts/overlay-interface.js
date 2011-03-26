@@ -24,7 +24,6 @@ var foxtesterInterface = {
 			.getBranch("extensions.foxtester.");
 
 			//get current Firefox installation
-			var systemversion = this.prefs.getCharPref("systemversion");
 			var browserlang = this.prefs.getCharPref("language");
 			var architecture = this.prefs.getCharPref("architecture");
 
@@ -146,13 +145,22 @@ var foxtesterInterface = {
 				var YYYY = currentDate.getFullYear();
 
 				var filename = fileuri.replace(/.*\//g,"").replace(/\.en-US.*/,"."+YYYY+MM+DD+".tar.bz2");	
-				downloadmenuitem = document.createElement("menuitem");
-				downloadmenuitem.setAttribute("label","latest-mozilla-central");
-				downloadmenuitem.setAttribute("filepath",fileuri);
-				downloadmenuitem.setAttribute("filename",filename);
-				downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
-				downloadnewvbox.appendChild(downloadmenuitem);
-				var showdownload = true;
+
+				var currentdownload = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+				currentdownload.initWithPath(watchedfolder);
+				currentdownload.append(filename);
+				
+				if(!currentdownload.exists()){
+
+					downloadmenuitem = document.createElement("menuitem");
+					downloadmenuitem.setAttribute("label","latest-mozilla-central");
+					downloadmenuitem.setAttribute("filepath",fileuri);
+					downloadmenuitem.setAttribute("filename",filename);
+					downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+					downloadnewvbox.appendChild(downloadmenuitem);
+					var showdownload = true;
+				}
 			}else{
 				//do nothing
 			}
@@ -304,15 +312,17 @@ var foxtesterInterface = {
 			if (permanentfolder.exists() && permanentfolder.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){
 				var showmakedefault = false;
 				var showrevertdefault = true;
-			}else {
-				if (systemversion !== "default"){
-					var showrevertdefault = true;
-					var showmakedefault = false;
+			}else if(!permanentfolder.exists() && !diversionfile.exists()){
+				var showrevertdefault = false;
+				if(showuninstallable === true){
+					var showmakedefault = true;
 				}else{
+					var showmakedefault = false;
+				}
+			}else{
+				if(permanentfolder.exists() || diversionfile.exists()){
+					var showmakedefault = false;
 					var showrevertdefault = false;
-					if(showuninstallable === true){
-						var showmakedefault = true;
-					}
 				}
 			}
 
@@ -375,10 +385,8 @@ var foxtesterInterface = {
 			if (showdownload === false){//match if install menu should not be displayed
 				//hide dowload menu
 				document.getElementById("foxtester-download").hidden = true;
-				document.getElementById("foxtester-download-separator").hidden = true;
 			}else{
 				document.getElementById("foxtester-download").hidden = false;
-				document.getElementById("foxtester-download-separator").hidden = false;
 			}
 		},
 
@@ -893,9 +901,6 @@ var foxtesterInterface = {
 						process.init(terminal);
 						var arguments = ["-e","'"+tempscript.path+"'"];
 						process.run(false, arguments, arguments.length);
-
-						//change system version preference
-						this.prefs.setCharPref("systemversion", "custom");
 					}
 				}
 			}
@@ -999,9 +1004,6 @@ var foxtesterInterface = {
 						process.init(terminal);
 						var arguments = ["-e","'"+tempscript.path+"'"];
 						process.run(false, arguments, arguments.length);
-
-						//change system version preference
-						this.prefs.setCharPref("systemversion", "default");
 					}
 				}
 			}

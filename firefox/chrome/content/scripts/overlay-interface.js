@@ -124,7 +124,28 @@ var foxtesterInterface = {
 			var fileuri = this.prefs.getCharPref("latestmozillacentral");
 
 			if(fileuri !== ""){
-				var filename = fileuri.replace(/.*\//g,"").replace(/en-US.*/,"tar.bz2");	
+
+				//get selected date and time
+				var currentDate = new Date();
+				var cmonth = currentDate.getMonth();
+				var month = cmonth+1;
+				var MM = "0" + month;
+				MM = MM.substring(MM.length-2, MM.length);
+				var day = currentDate.getDate();
+				var DD = "0" + day;
+				DD = DD.substring(DD.length-2, DD.length);
+				var hours = currentDate.getHours();
+				var HH = "0" + hours;
+				HH = HH.substring(HH.length-2, HH.length);
+				var minutes = currentDate.getMinutes();
+				var MI = "0" + minutes;
+				MI = MI.substring(MI.length-2, MI.length);
+				var seconds = currentDate.getSeconds();
+				var SS = "0" + seconds;
+				SS = SS.substring(SS.length-2, SS.length);
+				var YYYY = currentDate.getFullYear();
+
+				var filename = fileuri.replace(/.*\//g,"").replace(/\.en-US.*/,"."+YYYY+MM+DD+".tar.bz2");	
 				downloadmenuitem = document.createElement("menuitem");
 				downloadmenuitem.setAttribute("label","latest-mozilla-central");
 				downloadmenuitem.setAttribute("filepath",fileuri);

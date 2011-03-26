@@ -221,35 +221,56 @@ var foxtesterFirstrun = {
 
 				//reset pref
 				this.prefs.setCharPref("latestmozillacentral","empty");
-				try{
-					var downloadpage = "http://nightly.mozilla.org/";
-					var downRequest = new XMLHttpRequest();
-					downRequest.open('GET', downloadpage, true);
-					downRequest.onreadystatechange=function(){
-						if (this.readyState === 4 && this.status === 200) {
+				//get update timestamp
+				var latestmozillacentralupdate = this.prefs.getIntPref("latestmozillacentralupdate");
 
-							//access preferences interface
-							this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-							.getService(Components.interfaces.nsIPrefService)
-							.getBranch("extensions.foxtester.");
+				//get date and time
+				var currentDate = new Date();
+				var cmonth = currentDate.getMonth();
+				var month = cmonth+1;
+				var MM = "0" + month;
+				MM = MM.substring(MM.length-2, MM.length);
+				var day = currentDate.getDate();
+				var DD = "0" + day;
+				DD = DD.substring(DD.length-2, DD.length);
+				var YYYY = currentDate.getFullYear();
+				var currenttimestamp = YYYY+MM+DD;
 
-							//get pref
-							var architecture = this.prefs.getCharPref("architecture");
+				if(currenttimestamp > latestmozillacentralupdate){
 
-							//process response
-							var downsource = downRequest.responseText;
-							var newline = downsource.split("\n");
-							for(var i=0; i< newline.length; i++){
-								if (newline[i].match(".en-US.linux-"+architecture+".tar.bz2")) {
-									var fileuri = newline[i].replace(/<a href="/,"").replace(/\.tar\.bz2.*/,".tar.bz2");
-									this.prefs.setCharPref("latestmozillacentral",fileuri);
+					//change latestmozillacentralupdate to current timestamp
+					this.prefs.setIntPref("latestmozillacentralupdate",currenttimestamp);
+
+					try{
+						var downloadpage = "http://nightly.mozilla.org/";
+						var downRequest = new XMLHttpRequest();
+						downRequest.open('GET', downloadpage, true);
+						downRequest.onreadystatechange=function(){
+							if (this.readyState === 4 && this.status === 200) {
+
+								//access preferences interface
+								this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+								.getService(Components.interfaces.nsIPrefService)
+								.getBranch("extensions.foxtester.");
+
+								//get pref
+								var architecture = this.prefs.getCharPref("architecture");
+
+								//process response
+								var downsource = downRequest.responseText;
+								var newline = downsource.split("\n");
+								for(var i=0; i< newline.length; i++){
+									if (newline[i].match(".en-US.linux-"+architecture+".tar.bz2")) {
+										var fileuri = newline[i].replace(/<a href="/,"").replace(/\.tar\.bz2.*/,".tar.bz2");
+										this.prefs.setCharPref("latestmozillacentral",fileuri);
+									}
 								}
 							}
-						}
-					};
-					downRequest.send(null);
-				}catch(e){
-					//do nothing
+						};
+						downRequest.send(null);
+					}catch(e){
+						//do nothing
+					}
 				}
 			}
 		}

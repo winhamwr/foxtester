@@ -5,3 +5,4 @@ pref("extensions.foxtester.terminal", "/usr/bin/x-terminal-emulator");
 pref("extensions.foxtester.language", "en-US");
 pref("extensions.foxtester.architecture", "i686");
 pref("extensions.foxtester.latestmozillacentral", "empty");
+pref("extensions.foxtester.latestmozillacentralupdate", 20110326);

@@ -41,7 +41,7 @@ var foxtesterFirstrun = {
 			var storageService = Components.classes["@mozilla.org/storage/service;1"]
 			.getService(Components.interfaces.mozIStorageService);
 			var mDBConn = storageService.openDatabase(database);
-			
+
 			//fetch localization from strbundle
 			var strbundle = document.getElementById("foxtesterstrings");
 
@@ -68,7 +68,7 @@ var foxtesterFirstrun = {
 					//set preferences
 					this.prefs.setBoolPref("firstrun",false);
 					this.prefs.setCharPref("version",current);
-					
+
 					//get paths from environment variables
 					var envpaths = Components.classes["@mozilla.org/process/environment;1"]
 					.getService(Components.interfaces.nsIEnvironment)
@@ -205,7 +205,53 @@ var foxtesterFirstrun = {
 				if(!profilefolder.exists() || !profilefolder.isDirectory()) {
 					profilefolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
 				}
+				//get browser language
+				var browserlang = navigator.language;
+				this.prefs.setCharPref("language",browserlang);
+
+				//get architecture
+				var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+				.getService(Components.interfaces.nsIHttpProtocolHandler).oscpu;
+
+				if(!osString.match(/x86_64/)){
+					this.prefs.setCharPref("architecture","i686");
+				}else{
+					this.prefs.setCharPref("architecture","x86_64");
+				}
+
+				//reset pref
+				this.prefs.setCharPref("latestmozillacentral","");
+				try{
+					var downloadpage = "http://nightly.mozilla.org/";
+					var downRequest = new XMLHttpRequest();
+					downRequest.open('GET', downloadpage, true);
+					downRequest.onreadystatechange=function(){
+						if (this.readyState === 4 && this.status === 200) {
+
+							//access preferences interface
+							this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+							.getService(Components.interfaces.nsIPrefService)
+							.getBranch("extensions.foxtester.");
+
+							//get pref
+							var architecture = this.prefs.getCharPref("architecture");
+
+							//process response
+							var downsource = downRequest.responseText;
+							var newline = downsource.split("\n");
+							for(var i=0; i< newline.length; i++){
+								if (newline[i].match(".en-US.linux-"+architecture+".tar.bz2")) {
+									var fileuri = newline[i].replace(/<a href="/,"").replace(/\.tar\.bz2.*/,".tar.bz2");
+									this.prefs.setCharPref("latestmozillacentral",fileuri);
+								}
+							}
+						}
+					};
+					downRequest.send(null);
+				}catch(e){
+					//do nothing
+				}
 			}
 		}
 };
-window.addEventListener("load",function(){ foxtesterFirstrun.init(); },true);
+window.addEventListener("load", function(e) { setTimeout(function () { foxtesterFirstrun.init(); }, 150); }, false);

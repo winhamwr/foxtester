@@ -22,9 +22,11 @@ var foxtesterInterface = {
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.foxtester.");
-			
+
 			//get current Firefox installation
 			var systemversion = this.prefs.getCharPref("systemversion");
+			var browserlang = this.prefs.getCharPref("language");
+			var architecture = this.prefs.getCharPref("architecture");
 
 			//get current watchedfolder url
 			var watchedfolder = this.prefs.getCharPref("watchedfolder");
@@ -39,7 +41,8 @@ var foxtesterInterface = {
 			var showlaunchable = false;
 			var showmakedefault = false;
 			var showrevertdefault = false;
-		
+			var showdownload = false;
+
 			//reset menu
 			var installmenupopup = document.getElementById("foxtester-install-selected");
 			var installmenupopupvbox = document.getElementById("foxtester-install-selected-vbox");
@@ -51,6 +54,7 @@ var foxtesterInterface = {
 			var installnewvbox = document.createElement("vbox");
 			installnewvbox.setAttribute("id","foxtester-install-selected-vbox");
 			installmenupopup.appendChild(installnewvbox);
+			var installmenuitem;
 
 			//reset menu
 			var launchmenupopup = document.getElementById("foxtester-launch-selected");
@@ -63,7 +67,8 @@ var foxtesterInterface = {
 			var launchnewvbox = document.createElement("vbox");
 			launchnewvbox.setAttribute("id","foxtester-launch-selected-vbox");
 			launchmenupopup.appendChild(launchnewvbox);
-			
+			var launchmenuitem;
+
 			//reset menu
 			var uninstallmenupopup = document.getElementById("foxtester-uninstall-selected");
 			var uninstallmenupopupvbox = document.getElementById("foxtester-uninstall-selected-vbox");
@@ -75,7 +80,8 @@ var foxtesterInterface = {
 			var uninstallnewvbox = document.createElement("vbox");
 			uninstallnewvbox.setAttribute("id","foxtester-uninstall-selected-vbox");
 			uninstallmenupopup.appendChild(uninstallnewvbox);
-			
+			var uninstallmenuitem;
+
 			//reset menu
 			var removemenupopup = document.getElementById("foxtester-remove-selected");
 			var removemenupopupvbox = document.getElementById("foxtester-remove-selected-vbox");
@@ -87,7 +93,8 @@ var foxtesterInterface = {
 			var removenewvbox = document.createElement("vbox");
 			removenewvbox.setAttribute("id","foxtester-remove-selected-vbox");
 			removemenupopup.appendChild(removenewvbox);
-			
+			var removemenuitem;
+
 			var makedefaultmenupopup = document.getElementById("foxtester-make-default-selected");
 			var makedefaultmenupopupvbox = document.getElementById("foxtester-make-default-selected-vbox");
 			try{
@@ -98,6 +105,36 @@ var foxtesterInterface = {
 			var makedefaultnewvbox = document.createElement("vbox");
 			makedefaultnewvbox.setAttribute("id","foxtester-make-default-selected-vbox");
 			makedefaultmenupopup.appendChild(makedefaultnewvbox);
+			var makedefaultmenuitem;
+
+			//reset menu
+			var downloadmenupopup = document.getElementById("foxtester-download-selected");
+			var downloadmenupopupvbox = document.getElementById("foxtester-download-selected-vbox");
+			try{
+				downloadmenupopup.removeChild(downloadmenupopup.firstChild);
+			}catch(e){
+				//do nothing
+			}
+			var downloadnewvbox = document.createElement("vbox");
+			downloadnewvbox.setAttribute("id","foxtester-download-selected-vbox");
+			downloadmenupopup.appendChild(downloadnewvbox);
+			var downloadmenuitem;
+
+			//get download links and append menu
+			var fileuri = this.prefs.getCharPref("latestmozillacentral");
+
+			if(fileuri !== ""){
+				var filename = fileuri.replace(/.*\//g,"").replace(/en-US.*/,"tar.bz2");	
+				downloadmenuitem = document.createElement("menuitem");
+				downloadmenuitem.setAttribute("label","latest-mozilla-central");
+				downloadmenuitem.setAttribute("filepath",fileuri);
+				downloadmenuitem.setAttribute("filename",filename);
+				downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+				downloadnewvbox.appendChild(downloadmenuitem);
+				var showdownload = true;
+			}else{
+				//do nothing
+			}
 
 			//access database interface
 			var database = Components.classes['@mozilla.org/file/directory_service;1']
@@ -191,7 +228,7 @@ var foxtesterInterface = {
 							installmenuitem.setAttribute("package",package);
 							installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
 							installnewvbox.appendChild(installmenuitem);
-							
+
 							//append remove menuitems
 							removemenuitem = document.createElement("menuitem");
 							removemenuitem.setAttribute("label",package.replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
@@ -207,7 +244,7 @@ var foxtesterInterface = {
 							var showlaunchable = true;
 							//set make-default menu to be displayed
 							var showmakedefault = true;
-							
+
 							//append uninstall menuitems
 							uninstallmenuitem = document.createElement("menuitem");
 							uninstallmenuitem.setAttribute("label",package.replace(/.*-/,"").replace(/\.tar\.bz2/,""));
@@ -231,6 +268,31 @@ var foxtesterInterface = {
 				}
 				mDBConn.commitTransaction();
 				statement.reset();
+			}
+
+			var permanentfolderpath = "/opt/firefox";
+			var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
+			.createInstance(Components.interfaces.nsILocalFile);
+			permanentfolder.initWithPath(permanentfolderpath);
+
+			var diversionfilepath = "/usr/bin/firefox.ubuntu";
+			var diversionfile = Components.classes["@mozilla.org/file/local;1"]
+			.createInstance(Components.interfaces.nsILocalFile);
+			diversionfile.initWithPath(diversionfilepath);
+
+			if (permanentfolder.exists() && permanentfolder.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){
+				var showmakedefault = false;
+				var showrevertdefault = true;
+			}else {
+				if (systemversion !== "default"){
+					var showrevertdefault = true;
+					var showmakedefault = false;
+				}else{
+					var showrevertdefault = false;
+					if(showuninstallable === true){
+						var showmakedefault = true;
+					}
+				}
 			}
 
 			if (showinstallable === false){//match if install menu should not be displayed
@@ -261,31 +323,6 @@ var foxtesterInterface = {
 				document.getElementById("foxtester-remove").hidden = false;
 			}
 
-			var permanentfolderpath = "/opt/firefox";
-			var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsILocalFile);
-			permanentfolder.initWithPath(permanentfolderpath);
-
-			var diversionfilepath = "/usr/bin/firefox.ubuntu";
-			var diversionfile = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsILocalFile);
-			diversionfile.initWithPath(diversionfilepath);
-
-			if (permanentfolder.exists() && permanentfolder.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){
-				var showmakedefault = false;
-				var showrevertdefault = true;
-			}else {
-				if (systemversion !== "default"){
-					var showrevertdefault = true;
-					var showmakedefault = false;
-				}else{
-					var showrevertdefault = false;
-					if(showuninstallable === true){
-						var showmakedefault = true;
-					}
-				}
-			}
-
 			if (showmakedefault === false){//match if make-default menu should not be displayed
 				//hide make-default menu
 				document.getElementById("foxtester-make-default").hidden = true;
@@ -313,21 +350,15 @@ var foxtesterInterface = {
 			}else{
 				document.getElementById("foxtester-uninstall-separator").hidden = false;
 			}
-		},
 
-		browseMozilla: function () {//launch mozilla ftp site
-
-			//declare mozilla ftp site url
-			var mozillaftp = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/";
-
-			//open FTP site on a new tab
-			var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIWebNavigation)
-			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			.rootTreeItem
-			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIDOMWindow);
-			mainWindow.gBrowser.selectedTab = mainWindow.gBrowser.addTab(mozillaftp);
+			if (showdownload === false){//match if install menu should not be displayed
+				//hide dowload menu
+				document.getElementById("foxtester-download").hidden = true;
+				document.getElementById("foxtester-download-separator").hidden = true;
+			}else{
+				document.getElementById("foxtester-download").hidden = false;
+				document.getElementById("foxtester-download-separator").hidden = false;
+			}
 		},
 
 		installSelected: function (aFile) {//install selected file
@@ -492,7 +523,7 @@ var foxtesterInterface = {
 			installfolder.append("foxtester");
 			installfolder.append("install");
 			installfolder.append(installfoldername);
-			
+
 			//initiate profile folder
 			var profilefolder = Components.classes['@mozilla.org/file/directory_service;1']
 			.getService(Components.interfaces.nsIProperties)
@@ -500,7 +531,7 @@ var foxtesterInterface = {
 			profilefolder.append("foxtester");
 			profilefolder.append("profiles");
 			profilefolder.append(profilename);
-			
+
 			//remove and recreate temporary script
 			var tempscript = Components.classes["@mozilla.org/file/directory_service;1"]
 			.getService(Components.interfaces.nsIProperties)

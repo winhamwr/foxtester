@@ -1,8 +1,6 @@
 <!ENTITY Algorithm "Algorítmo">
 <!ENTITY Browse "Navegar Diretório FTP">
-<!ENTITY CheckSelected "Checar Arquivo">
-<!ENTITY Checksum "Checksum">
-<!ENTITY DefaultCheckSum "Algorítimo Padrão">
+<!ENTITY Download "Baixar">
 <!ENTITY FoxTesterPreferences "Preferências FoxTester">
 <!ENTITY FoxTesterTitle "FoxTester">
 <!ENTITY InstallSelected "Instalar">

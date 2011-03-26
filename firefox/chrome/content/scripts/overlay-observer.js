@@ -75,11 +75,6 @@ const FoxTesterWatchedFolderObserver =
 
 				//reset database
 				mDBConn.executeSimpleSQL("DELETE FROM downloads");
-
-				//rebuild menus
-				document.getElementById('foxtester-install-selected').builder.rebuild();
-				document.getElementById('foxtester-uninstall-selected').builder.rebuild();
-				document.getElementById('foxtester-remove-selected').builder.rebuild();
 			}
 		}
 };

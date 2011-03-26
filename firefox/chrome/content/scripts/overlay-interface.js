@@ -122,7 +122,7 @@ var foxtesterInterface = {
 			//get download links and append menu
 			var fileuri = this.prefs.getCharPref("latestmozillacentral");
 
-			if(fileuri !== ""){
+			if(fileuri !== "empty"){
 
 				//get selected date and time
 				var currentDate = new Date();
@@ -162,7 +162,7 @@ var foxtesterInterface = {
 					var showdownload = true;
 				}
 			}else{
-				//do nothing
+				var showdownload = false;
 			}
 
 			//access database interface
@@ -299,7 +299,7 @@ var foxtesterInterface = {
 				statement.reset();
 			}
 
-			var permanentfolderpath = "/opt/firefox";
+			var permanentfolderpath = "/opt/foxtester";
 			var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
 			.createInstance(Components.interfaces.nsILocalFile);
 			permanentfolder.initWithPath(permanentfolderpath);
@@ -309,20 +309,15 @@ var foxtesterInterface = {
 			.createInstance(Components.interfaces.nsILocalFile);
 			diversionfile.initWithPath(diversionfilepath);
 
-			if (permanentfolder.exists() && permanentfolder.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){
+			if (diversionfile.exists() && !diversionfile.isDirectory()){
 				var showmakedefault = false;
 				var showrevertdefault = true;
-			}else if(!permanentfolder.exists() && !diversionfile.exists()){
+			}else{
 				var showrevertdefault = false;
 				if(showuninstallable === true){
 					var showmakedefault = true;
 				}else{
 					var showmakedefault = false;
-				}
-			}else{
-				if(permanentfolder.exists() || diversionfile.exists()){
-					var showmakedefault = false;
-					var showrevertdefault = false;
 				}
 			}
 
@@ -824,7 +819,7 @@ var foxtesterInterface = {
 				var endline = "echo \""+endlinemessage+"\"";
 
 				//initiate /opt folder
-				var permanentfolderpath = "/opt";
+				var permanentfolderpath = "/opt/foxtester";
 				var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
 				permanentfolder.initWithPath(permanentfolderpath);
@@ -864,9 +859,9 @@ var foxtesterInterface = {
 				if(tempscript.exists() && !tempscript.isDirectory() && pluginfolder.exists() && pluginfolder.isDirectory() && sourcefile.exists() && !sourcefile.isDirectory()){//check everything exists
 
 					//declare command line to change dir to installation folder
-					var firstline = "cd \'"+permanentfolder.path+"\' && sudo rm -fr \'"+permanentfolder.path+"/firefox\'";
+					var firstline = "sudo mkdir \'"+permanentfolder.path+"\'";
 					//declare command to extract source file
-					var secondline = "sudo tar -xvjf \'"+sourcefile.path+"\'";
+					var secondline = "cd \'"+permanentfolder.path+"\' && sudo rm -fr \'"+permanentfolder.path+"/firefox\' && sudo tar -xvjf \'"+sourcefile.path+"\'";
 					//declare command line to copy plugins to new installation folder
 					var thirdline = "sudo rm -fr \'"+permanentfolder.path+"/firefox/plugins\' && sudo ln -s \'"+pluginfolder.path+"\' \'"+permanentfolder.path+"/firefox/plugins\'";
 					//declare command line to copy new firefox executable
@@ -941,7 +936,7 @@ var foxtesterInterface = {
 				var endline = "echo \""+endlinemessage+"\"";
 
 				//initiate /opt/firefox folder
-				var permanentfolderpath = "/opt/firefox";
+				var permanentfolderpath = "/opt/foxtester";
 				var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
 				permanentfolder.initWithPath(permanentfolderpath);
@@ -976,7 +971,7 @@ var foxtesterInterface = {
 				if(tempscript.exists() && !tempscript.isDirectory() && permanentfolder.exists() && permanentfolder.isDirectory() && localbinfile.exists() && !localbinfile.isDirectory() && diversionfile.exists() && !diversionfile.isDirectory()){//check everything exists
 
 					//declare command line to delete files
-					var firstline = "sudo unlink \'"+permanentfolder.path+"/plugins\'";
+					var firstline = "sudo unlink \'"+permanentfolder.path+"/firefox/plugins\'";
 					var secondline = "sudo rm -fr \'"+permanentfolder.path+"\' && sudo rm -f \'"+localbinfile.path+"\' && sudo dpkg-divert --rename --remove \'"+localbinfile.path+"\'";
 
 					//write command lines to temporary script

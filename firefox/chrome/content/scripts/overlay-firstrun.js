@@ -220,7 +220,7 @@ var foxtesterFirstrun = {
 				}
 
 				//reset pref
-				this.prefs.setCharPref("latestmozillacentral","");
+				this.prefs.setCharPref("latestmozillacentral","empty");
 				try{
 					var downloadpage = "http://nightly.mozilla.org/";
 					var downRequest = new XMLHttpRequest();

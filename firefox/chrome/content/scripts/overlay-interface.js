@@ -146,10 +146,14 @@ var foxtesterInterface = {
 
 				var filename = fileuri.replace(/.*\//g,"").replace(/\.en-US.*/,"."+YYYY+MM+DD+".tar.bz2");	
 
-				var currentdownload = Components.classes["@mozilla.org/file/local;1"]
-				.createInstance(Components.interfaces.nsILocalFile);
-				currentdownload.initWithPath(watchedfolder);
-				currentdownload.append(filename);
+				try{
+					var currentdownload = Components.classes["@mozilla.org/file/local;1"]
+					.createInstance(Components.interfaces.nsILocalFile);
+					currentdownload.initWithPath(watchedfolder);
+					currentdownload.append(filename);
+				}catch(e){
+					//do nothing
+				}
 				
 				if(!currentdownload.exists()){
 
@@ -299,16 +303,23 @@ var foxtesterInterface = {
 				statement.reset();
 			}
 
-			var permanentfolderpath = "/opt/foxtester";
-			var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsILocalFile);
-			permanentfolder.initWithPath(permanentfolderpath);
+			try{
+				var permanentfolderpath = "/opt/foxtester";
+				var permanentfolder = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+				permanentfolder.initWithPath(permanentfolderpath);
+			}catch(e){
+				//do nothing
+			}
 
-			var diversionfilepath = "/usr/bin/firefox.ubuntu";
-			var diversionfile = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsILocalFile);
-			diversionfile.initWithPath(diversionfilepath);
-
+			try{
+				var diversionfilepath = "/usr/bin/firefox.ubuntu";
+				var diversionfile = Components.classes["@mozilla.org/file/local;1"]
+				.createInstance(Components.interfaces.nsILocalFile);
+				diversionfile.initWithPath(diversionfilepath);
+			}catch(e){
+				//do nothing
+			}
 			if (diversionfile.exists() && !diversionfile.isDirectory()){
 				var showmakedefault = false;
 				var showrevertdefault = true;

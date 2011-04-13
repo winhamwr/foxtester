@@ -9,6 +9,7 @@
 <!ENTITY PluginFolder "Pasta de Plugins">
 <!ENTITY Preferences "Preferências">
 <!ENTITY RemoveSelected "Apagar">
+<!ENTITY Reset "Zerar">
 <!ENTITY RevertDefault "Reverter para Original">
 <!ENTITY SelectFolder "Selecionar Pasta">
 <!ENTITY SelectProgram "Selecionar Programa">

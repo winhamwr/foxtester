@@ -2,8 +2,12 @@ var foxtesterFileManager = {
 
 		openLink:function(aSite) {
 
-			if(aSite == "mozillaftp"){
-				var url = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/";
+			if(aSite == "releases" || aSite == "nightly"){
+				var url = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/"+aSite+"/";
+			}
+
+			if(aSite.match(/latest-mozilla-/)){
+				var url = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/"+aSite+"/";
 			}
 
 			if(aSite.match("file:") || aSite.match("http:")){
@@ -38,15 +42,15 @@ var foxtesterFileManager = {
 
 			//get prefs
 			var watchedfolder = this.prefs.getCharPref("watchedfolder");
-				
+
 			if(watchedfolder !== ""){
 
 				var file = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
 				file.initWithPath(watchedfolder);
-				
+
 				if(file.exists() && file.isDirectory()){
-					
+
 					file.append(aFile);
 
 					//download manager
@@ -77,7 +81,7 @@ var foxtesterFileManager = {
 						dm_ui.show(window, dl.id, Components.interfaces.nsIDownloadManagerUI.REASON_NEW_DOWNLOAD);
 					}
 				}
-				
+
 			}
 		}
 };

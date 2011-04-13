@@ -9,6 +9,7 @@
 <!ENTITY PluginFolder "Plugin Folder">
 <!ENTITY Preferences "Preferences">
 <!ENTITY RemoveSelected "Delete">
+<!ENTITY Reset "Reset">
 <!ENTITY RevertDefault "Revert to Original">
 <!ENTITY SelectFolder "Select Folder">
 <!ENTITY SelectProgram "Select Program">

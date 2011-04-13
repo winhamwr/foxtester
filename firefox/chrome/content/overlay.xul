@@ -22,7 +22,14 @@
     
 	<popupset>
 		<menupopup id="foxtester-contextmenu" onpopupshowing="foxtesterInterface.showHideMenus();">
-			<menuitem id="foxtester-browse" label="&Browse;" class="menuitem-iconic" image="chrome://foxtester/skin/search16.png" oncommand="foxtesterFileManager.openLink('mozillaftp');"/>
+			<menu id="foxtester-browse" label="&Browse;" class="menu-iconic" image="chrome://foxtester/skin/search16.png">
+				<menupopup id="foxtester-browse-selected">
+					<menuitem id="foxtester-browse-selected-releases" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/release16.png" oncommand="foxtesterFileManager.openLink('releases');"/>
+					<menuitem id="foxtester-browse-selected-beta" label="latest-mozilla-beta" class="menuitem-iconic" image="chrome://foxtester/skin/beta16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-beta');"/>
+					<menuitem id="foxtester-browse-selected-aurora" label="latest-mozilla-aurora" class="menuitem-iconic" image="chrome://foxtester/skin/aurora16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-aurora');"/>
+					<menuitem id="foxtester-browse-selected-central" label="latest-mozilla-central" class="menuitem-iconic" image="chrome://foxtester/skin/nightly16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-central');"/>
+				</menupopup>
+			</menu>
 			<menu id="foxtester-download" label="&Download;" class="menu-iconic" image="chrome://foxtester/skin/download16.png">
 				<menupopup id="foxtester-download-selected">
 					<vbox id="foxtester-download-selected-vbox">
@@ -64,6 +71,8 @@
 			</menu>
 			<menuitem id="foxtester-revert-default" label="&RevertDefault;" class="menuitem-iconic" image="chrome://foxtester/skin/revert16.png" oncommand="foxtesterInterface.revertDefault();"/>	
 			<menuseparator id="foxtester-prefs-separator"/>
+			<menuitem id="foxtester-reset" label="&Reset;" class="menuitem-iconic" image="chrome://foxtester/skin/reset16.png" oncommand="foxtesterInterface.resetAll();"/>
+			<menuseparator id="foxtester-reset-separator"/>
 			<menuitem id="foxtester-preferences" label="&Preferences;" class="menuitem-iconic" image="chrome://foxtester/skin/settings16.png" oncommand="window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');"/>
 		</menupopup>
 	</popupset>

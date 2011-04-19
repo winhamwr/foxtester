@@ -50,7 +50,7 @@
 				</menupopup>
 			</menu>
 			<menuseparator id="foxtester-uninstall-separator"/>
-			<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/delete16.png">
+			<menu id="foxtester-uninstall" label="&UninstallSelected;" class="menu-iconic" image="chrome://foxtester/skin/minus16.png">
 				<menupopup id="foxtester-uninstall-selected">
 					<vbox id="foxtester-uninstall-selected-vbox">
 					</vbox>

@@ -144,7 +144,7 @@ var foxtesterInterface = {
 				SS = SS.substring(SS.length-2, SS.length);
 				var YYYY = currentDate.getFullYear();
 
-				var filename = fileuri.replace(/.*\//g,"").replace(/\.en-US.*/,"."+YYYY+MM+DD+".tar.bz2");	
+				var filename = fileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");	
 
 				try{
 					var currentdownload = Components.classes["@mozilla.org/file/local;1"]
@@ -257,14 +257,14 @@ var foxtesterInterface = {
 
 							//append install menuitems
 							installmenuitem = document.createElement("menuitem");
-							installmenuitem.setAttribute("label",package.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+							installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
 							installmenuitem.setAttribute("package",package);
 							installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
 							installnewvbox.appendChild(installmenuitem);
 
 							//append remove menuitems
 							removemenuitem = document.createElement("menuitem");
-							removemenuitem.setAttribute("label",package.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
+							removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
 							removemenuitem.setAttribute("package",package);
 							removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
 							removenewvbox.appendChild(removemenuitem);
@@ -280,19 +280,19 @@ var foxtesterInterface = {
 
 							//append uninstall menuitems
 							uninstallmenuitem = document.createElement("menuitem");
-							uninstallmenuitem.setAttribute("label",package.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+							uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
 							uninstallmenuitem.setAttribute("package",package);
 							uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
 							uninstallnewvbox.appendChild(uninstallmenuitem);
 							//append launch menuitems
 							launchmenuitem = document.createElement("menuitem");
-							launchmenuitem.setAttribute("label",package.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
+							launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
 							launchmenuitem.setAttribute("package",package);
 							launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
 							launchnewvbox.appendChild(launchmenuitem);
 							//append makedefault menuitems
 							makedefaultmenuitem = document.createElement("menuitem");
-							makedefaultmenuitem.setAttribute("label",package.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
+							makedefaultmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
 							makedefaultmenuitem.setAttribute("package",package);
 							makedefaultmenuitem.setAttribute('oncommand',"foxtesterInterface.makeDefault(this.getAttribute('package'));");
 							makedefaultnewvbox.appendChild(makedefaultmenuitem);
@@ -408,9 +408,9 @@ var foxtesterInterface = {
 			//fetch pluginfolder path from preferences
 			var pluginfolderpath = this.prefs.getCharPref("pluginfolder");
 			//declare profile name based on file name
-			var profilename = aFile.replace(/\.en-US.*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
+			var profilename = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
 			//declare installation folder name based on file name
-			var installfoldername = aFile.replace(/\.en-US.*/,"").replace(/\.tar\.bz2/g,"").replace(/\./g,"-");
+			var installfoldername = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.tar\.bz2/g,"").replace(/\./g,"-");
 			//declare basic shell command lines
 			var bashline = "#!/bin/bash";
 			var newline = "\n";
@@ -521,7 +521,7 @@ var foxtesterInterface = {
 
 				//fetch message from strbundle
 				var strbundle = document.getElementById("foxtesterstrings");
-				var message = strbundle.getFormattedString("versioninstalled", [ aFile.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"") ]);
+				var message = strbundle.getFormattedString("versioninstalled", [ aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"") ]);
 				var messagetitle = strbundle.getString("foxtesteralert");
 				//alert user
 				var alertsService = Components.classes["@mozilla.org/alerts-service;1"]
@@ -540,9 +540,9 @@ var foxtesterInterface = {
 			.getBranch("extensions.foxtester.");
 
 			//declare profile name based on file name
-			var profilename = aFile.replace(/\.en-US.*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
+			var profilename = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
 			//declare installation folder name based on file name
-			var installfoldername = aFile.replace(/\.en-US.*/,"").replace(/\.tar\.bz2/g,"").replace(/\./g,"-");
+			var installfoldername = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.tar\.bz2/g,"").replace(/\./g,"-");
 			//declare basic shell command lines
 			var bashline = "#!/bin/bash";
 			var newline = "\n";
@@ -608,7 +608,7 @@ var foxtesterInterface = {
 		uninstallSelected: function (aFile) {//uninstall selected file
 
 			//declare foldername based on file name
-			var installfoldername = aFile.replace(/\.en-US.*/,"").replace(/\.tar\.bz2/,"").replace(/\./g,"-");
+			var installfoldername = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.tar\.bz2/,"").replace(/\./g,"-");
 			//declare basic shell command lines
 			var bashline = "#!/bin/bash";
 			var newline = "\n";
@@ -666,7 +666,7 @@ var foxtesterInterface = {
 			}
 
 			//declare profile name based on file name
-			var profilename = aFile.replace(/\.en-US.*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
+			var profilename = aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"-foxtester").replace(/\.tar\.bz2/g,"-foxtester").replace(/\./g,"-");
 			//initiate profile folder
 			var profile = Components.classes['@mozilla.org/file/directory_service;1']
 			.getService(Components.interfaces.nsIProperties)
@@ -733,7 +733,7 @@ var foxtesterInterface = {
 
 			//fetch message from strbundle
 			var strbundle = document.getElementById("foxtesterstrings");
-			var message = strbundle.getFormattedString("versionuninstalled", [ aFile.replace(/\.en-US.*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"") ]);
+			var message = strbundle.getFormattedString("versionuninstalled", [ aFile.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"") ]);
 			var messagetitle = strbundle.getString("foxtesteralert");
 			//alert user
 			var alertsService = Components.classes["@mozilla.org/alerts-service;1"]

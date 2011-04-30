@@ -183,7 +183,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",firefoxcentralfilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfirefoxcentraldownload = true;
 					}
@@ -213,7 +213,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",firefoxaurorafilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfirefoxauroradownload = true;
 					}
@@ -243,7 +243,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",firefoxbetafilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfirefoxbetadownload = true;
 					}
@@ -289,7 +289,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",fenneccentralfilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfenneccentraldownload = true;
 					}
@@ -319,7 +319,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",fennecaurorafilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfennecauroradownload = true;
 					}
@@ -349,7 +349,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",fennecbetafilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showfennecbetadownload = true;
 					}
@@ -393,7 +393,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",thunderbirdcentralfilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showthunderbirdcentraldownload = true;
 					}
@@ -423,7 +423,7 @@ var foxtesterInterface = {
 						downloadmenuitem.setAttribute("filename",thunderbirdaurorafilename);
 						downloadmenuitem.setAttribute("class","menuitem-iconic");
 						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
-						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
 						downloadnewvbox.appendChild(downloadmenuitem);
 						showthunderbirdauroradownload = true;
 					}
@@ -530,7 +530,7 @@ var foxtesterInterface = {
 								installmenuitem.setAttribute("class","menuitem-iconic");
 								installmenuitem.setAttribute("tooltiptext","Fennec");
 								installmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installmenuitem.addEventListener('command',function (){foxtesterInterface.installSelected(this.getAttribute('package'));},false);
 								installnewvbox.appendChild(installmenuitem);
 							}else if(package.match(/seamonkey/) && seamonkey === true){
 								installmenuitem = document.createElement("menuitem");
@@ -539,7 +539,7 @@ var foxtesterInterface = {
 								installmenuitem.setAttribute("class","menuitem-iconic");
 								installmenuitem.setAttribute("tooltiptext","Seamonkey");
 								installmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
-								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installmenuitem.addEventListener('command',function (){foxtesterInterface.installSelected(this.getAttribute('package'));},false);
 								installnewvbox.appendChild(installmenuitem);
 							}else if(package.match(/thunderbird/) && thunderbird === true){
 								installmenuitem = document.createElement("menuitem");
@@ -561,7 +561,7 @@ var foxtesterInterface = {
 										installmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
 									}
 								}
-								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installmenuitem.addEventListener('command',function (){foxtesterInterface.installSelected(this.getAttribute('package'));},false);
 								installnewvbox.appendChild(installmenuitem);
 							}else if(package.match(/firefox/) && firefox === true){
 								installmenuitem = document.createElement("menuitem");
@@ -586,7 +586,7 @@ var foxtesterInterface = {
 										installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
 									}
 								}
-								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installmenuitem.addEventListener('command',function (){foxtesterInterface.installSelected(this.getAttribute('package'));},false);
 								installnewvbox.appendChild(installmenuitem);
 							}
 
@@ -598,7 +598,7 @@ var foxtesterInterface = {
 								removemenuitem.setAttribute("class","menuitem-iconic");
 								removemenuitem.setAttribute("tooltiptext","Fennec");
 								removemenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removemenuitem.addEventListener('command',function (){foxtesterInterface.removeSelected(this.getAttribute('package'));},false);
 								removenewvbox.appendChild(removemenuitem);
 							}else if(package.match(/seamonkey/) && seamonkey === true){
 								removemenuitem = document.createElement("menuitem");
@@ -607,7 +607,7 @@ var foxtesterInterface = {
 								removemenuitem.setAttribute("class","menuitem-iconic");
 								removemenuitem.setAttribute("tooltiptext","Seamonkey");
 								removemenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
-								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removemenuitem.addEventListener('command',function (){foxtesterInterface.removeSelected(this.getAttribute('package'));},false);
 								removenewvbox.appendChild(removemenuitem);
 							}else if(package.match(/thunderbird/) && thunderbird === true){
 								removemenuitem = document.createElement("menuitem");
@@ -629,7 +629,7 @@ var foxtesterInterface = {
 										removemenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
 									}
 								}
-								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removemenuitem.addEventListener('command',function (){foxtesterInterface.removeSelected(this.getAttribute('package'));},false);
 								removenewvbox.appendChild(removemenuitem);
 							}else if(package.match(/firefox/) && firefox === true){
 								removemenuitem = document.createElement("menuitem");
@@ -654,7 +654,7 @@ var foxtesterInterface = {
 										removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
 									}
 								}
-								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removemenuitem.addEventListener('command',function (){foxtesterInterface.removeSelected(this.getAttribute('package'));},false);
 								removenewvbox.appendChild(removemenuitem);
 							}
 						}
@@ -677,7 +677,7 @@ var foxtesterInterface = {
 								uninstallmenuitem.setAttribute("class","menuitem-iconic");
 								uninstallmenuitem.setAttribute("tooltiptext","Fennec");
 								uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallmenuitem.addEventListener('command',function (){foxtesterInterface.uninstallSelected(this.getAttribute('package'));},false);
 								uninstallnewvbox.appendChild(uninstallmenuitem);
 							}else if(package.match(/seamonkey/) && seamonkey === true){
 								uninstallmenuitem = document.createElement("menuitem");
@@ -686,7 +686,7 @@ var foxtesterInterface = {
 								uninstallmenuitem.setAttribute("class","menuitem-iconic");
 								uninstallmenuitem.setAttribute("tooltiptext","Seamonkey");
 								uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
-								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallmenuitem.addEventListener('command',function (){foxtesterInterface.uninstallSelected(this.getAttribute('package'));},false);
 								uninstallnewvbox.appendChild(uninstallmenuitem);
 							}else if(package.match(/thunderbird/) && thunderbird === true){
 								uninstallmenuitem = document.createElement("menuitem");
@@ -708,7 +708,7 @@ var foxtesterInterface = {
 										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
 									}
 								}
-								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallmenuitem.addEventListener('command',function (){foxtesterInterface.uninstallSelected(this.getAttribute('package'));},false);
 								uninstallnewvbox.appendChild(uninstallmenuitem);
 							}else if(package.match(/firefox/) && firefox === true){
 								uninstallmenuitem = document.createElement("menuitem");
@@ -733,7 +733,7 @@ var foxtesterInterface = {
 										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
 									}
 								}
-								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallmenuitem.addEventListener('command',function (){foxtesterInterface.uninstallSelected(this.getAttribute('package'));},false);
 								uninstallnewvbox.appendChild(uninstallmenuitem);
 							}
 
@@ -745,7 +745,7 @@ var foxtesterInterface = {
 								launchmenuitem.setAttribute("class","menuitem-iconic");
 								launchmenuitem.setAttribute("tooltiptext","Fennec");
 								launchmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchmenuitem.addEventListener('command',function (){foxtesterInterface.launchSelected(this.getAttribute('package'));},false);
 								launchnewvbox.appendChild(launchmenuitem);
 							}else if(package.match(/seamonkey/) && seamonkey === true){
 								launchmenuitem = document.createElement("menuitem");
@@ -754,7 +754,7 @@ var foxtesterInterface = {
 								launchmenuitem.setAttribute("class","menuitem-iconic");
 								launchmenuitem.setAttribute("tooltiptext","Seamonkey");
 								launchmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
-								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchmenuitem.addEventListener('command',function (){foxtesterInterface.launchSelected(this.getAttribute('package'));},false);
 								launchnewvbox.appendChild(launchmenuitem);
 							}else if(package.match(/thunderbird/) && thunderbird === true){
 								launchmenuitem = document.createElement("menuitem");
@@ -776,7 +776,7 @@ var foxtesterInterface = {
 										launchmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
 									}
 								}
-								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchmenuitem.addEventListener('command',function (){foxtesterInterface.launchSelected(this.getAttribute('package'));},false);
 								launchnewvbox.appendChild(launchmenuitem);
 							}else if(package.match(/firefox/) && firefox === true){
 								launchmenuitem = document.createElement("menuitem");
@@ -801,7 +801,7 @@ var foxtesterInterface = {
 										launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
 									}
 								}
-								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchmenuitem.addEventListener('command',function (){foxtesterInterface.launchSelected(this.getAttribute('package'));},false);
 								launchnewvbox.appendChild(launchmenuitem);
 							}
 
@@ -829,7 +829,7 @@ var foxtesterInterface = {
 										makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
 									}
 								}
-								makedefaultmenuitem.setAttribute('oncommand',"foxtesterInterface.makeDefault(this.getAttribute('package'));");
+								makedefaultmenuitem.addEventListener('command',function (){foxtesterInterface.makeDefault(this.getAttribute('package'));},false);
 								makedefaultnewvbox.appendChild(makedefaultmenuitem);
 							}
 						}

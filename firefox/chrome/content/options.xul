@@ -23,41 +23,50 @@
 		</preferences>
 		<vbox>
 			<spacer height="10" flex="0"/>
-			<hbox>
-				<label value="&WatchedFolder;: " /> 
-				<textbox preference="pref_watchedfolder" id="watchedfolder" readonly="true" size="30"/>
-				<vbox>
-					<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
-				</vbox>
-			</hbox>
+			<groupbox orient="vertical">
+				<caption label="&Paths;" />
+				<spacer height="5" flex="0"/>	
+				<hbox>
+					<label value="&WatchedFolder;: " /> 
+					<textbox preference="pref_watchedfolder" id="watchedfolder" readonly="true" size="30"/>
+					<vbox>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
+					</vbox>
+				</hbox>
+				<spacer height="10" flex="0"/>
+				<hbox>
+					<label value="&PluginFolder;: " /> 
+					<textbox preference="pref_pluginfolder" id="pluginfolder" readonly="true" size="30"/>
+					<vbox>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
+					</vbox>
+				</hbox>
+				<spacer height="10" flex="0"/>
+				<hbox>
+					<label value="&Terminal;: " />
+					<textbox preference="pref_terminal" id="terminal" size="30"/>
+					<vbox>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
+					</vbox>
+				</hbox>
+			</groupbox>
 			<spacer height="10" flex="0"/>
-			<hbox>
-				<label value="&PluginFolder;: " /> 
-				<textbox preference="pref_pluginfolder" id="pluginfolder" readonly="true" size="30"/>
-				<vbox>
-					<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
-				</vbox>
-			</hbox>
-			<spacer height="10" flex="0"/>
-			<hbox>
-				<label value="&Terminal;: " />
-				<textbox preference="pref_terminal" id="terminal" size="30"/>
-				<vbox>
-					<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
-				</vbox>
-			</hbox>
-			<spacer height="10" flex="0"/>
-			<hbox>
-				<label value="&Applications;" /> 
-				<spacer width="5" flex="0"/>
-				<vbox>
-					<checkbox label="Firefox" preference="pref_firefox" id="firefox" size="1"/>
-					<checkbox label="Fennec" preference="pref_fennec" id="fennec" size="1"/>
-					<checkbox label="Seamonkey" preference="pref_seamonkey" id="seamonkey" size="1"/>
-					<checkbox label="Thunderbird" preference="pref_thunderbird" id="thunderbird" size="1"/>
-				</vbox>
-			</hbox>
-
+			<groupbox orient="vertical">
+				<caption label="&Applications;" />
+				<spacer height="5" flex="0"/>	
+				<hbox>
+					<vbox>
+						<checkbox label="Firefox" preference="pref_firefox" id="firefox" size="1"/>
+						<checkbox label="Fennec" preference="pref_fennec" id="fennec" size="1"/>
+					</vbox>
+					<vbox>
+						<checkbox label="Seamonkey" preference="pref_seamonkey" id="seamonkey" size="1"/>
+						<checkbox label="Thunderbird" preference="pref_thunderbird" id="thunderbird" size="1"/>
+					</vbox>
+				</hbox>
+				<spacer height="5" flex="0"/>	
+				<textbox id="tipscript" value="&ApplicationsWarning;" readonly="true" multiline="true" cols="40" rows="4" flex="0" />
+			</groupbox>
 			<spacer height="20" flex="0"/>
 		</vbox>
 	</prefpane>

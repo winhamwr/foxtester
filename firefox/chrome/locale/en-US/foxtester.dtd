@@ -1,5 +1,6 @@
 <!ENTITY Algorithm "Algorithm">
-<!ENTITY Applications "Applications">
+<!ENTITY Applications "Supported Applications">
+<!ENTITY ApplicationsWarning "If you do not intend to test some of the applications above, untick them. When an application is disabled here, the extension won't check for new downloads and won't display the corresponding menus.">
 <!ENTITY Browse "Browse FTP Directory">
 <!ENTITY Download "Download">
 <!ENTITY FoxTesterPreferences "FoxTester Preferences">
@@ -7,6 +8,7 @@
 <!ENTITY InstallSelected "Install">
 <!ENTITY LaunchSelected "Launch">
 <!ENTITY MakeDefault "Set as Default">
+<!ENTITY Paths "Directories and Executables">
 <!ENTITY PluginFolder "Plugin Folder">
 <!ENTITY Preferences "Preferences">
 <!ENTITY RemoveSelected "Delete">

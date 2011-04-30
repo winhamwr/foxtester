@@ -1,5 +1,6 @@
 <!ENTITY Algorithm "Algorítmo">
-<!ENTITY Applications "Aplicativos">
+<!ENTITY Applications "Aplicativos Supportados">
+<!ENTITY ApplicationsWarning "Se você não pretende testar alguns dos aplicativos acima, desabilite-os, pois assim a extensão não checará novos downloads e não exibirá os menus correspondentes.">
 <!ENTITY Browse "Navegar Diretório FTP">
 <!ENTITY Download "Baixar">
 <!ENTITY FoxTesterPreferences "Preferências FoxTester">
@@ -7,6 +8,7 @@
 <!ENTITY InstallSelected "Instalar">
 <!ENTITY LaunchSelected "Lançar">
 <!ENTITY MakeDefault "Tornar Padrão">
+<!ENTITY Paths "Diretórios e Executáveis">
 <!ENTITY PluginFolder "Pasta de Plugins">
 <!ENTITY Preferences "Preferências">
 <!ENTITY RemoveSelected "Apagar">

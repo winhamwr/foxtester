@@ -9,7 +9,7 @@
 		<em:unpack>true</em:unpack>
 		<em:optionsURL>chrome://foxtester/content/options.xul</em:optionsURL>
 		<em:name>FoxTester</em:name>
-		<em:description>Install and launch multiple versions of Firefox while using the default installation and without affecting the default user profile.</em:description>
+		<em:description>Install and launch multiple versions of Firefox, Fennec, Seamonkey and Thunderbird while using the default installations and without affecting the default user profiles.</em:description>
 		<em:creator>webgapps</em:creator>
 		<em:contributor>chocolateboy</em:contributor>
 		<em:homepageURL>http://www.webgapps.org/addons/foxtester</em:homepageURL>

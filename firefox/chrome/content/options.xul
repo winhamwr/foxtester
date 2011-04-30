@@ -16,6 +16,10 @@
 			<preference id="pref_watchedfolder" name="extensions.foxtester.watchedfolder" type="string"/>
 			<preference id="pref_pluginfolder" name="extensions.foxtester.pluginfolder" type="string"/>
 			<preference id="pref_terminal" name="extensions.foxtester.terminal" type="string"/>
+			<preference id="pref_firefox" name="extensions.foxtester.firefox" type="bool"/>
+			<preference id="pref_fennec" name="extensions.foxtester.fennec" type="bool"/>
+			<preference id="pref_seamonkey" name="extensions.foxtester.seamonkey" type="bool"/>
+			<preference id="pref_thunderbird" name="extensions.foxtester.thunderbird" type="bool"/>
 		</preferences>
 		<vbox>
 			<spacer height="10" flex="0"/>
@@ -36,12 +40,24 @@
 			</hbox>
 			<spacer height="10" flex="0"/>
 			<hbox>
-				<label value="&Terminal;: " /> 
+				<label value="&Terminal;: " />
 				<textbox preference="pref_terminal" id="terminal" size="30"/>
 				<vbox>
 					<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectProgram;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
 				</vbox>
 			</hbox>
+			<spacer height="10" flex="0"/>
+			<hbox>
+				<label value="&Applications;" /> 
+				<spacer width="5" flex="0"/>
+				<vbox>
+					<checkbox label="Firefox" preference="pref_firefox" id="firefox" size="1"/>
+					<checkbox label="Fennec" preference="pref_fennec" id="fennec" size="1"/>
+					<checkbox label="Seamonkey" preference="pref_seamonkey" id="seamonkey" size="1"/>
+					<checkbox label="Thunderbird" preference="pref_thunderbird" id="thunderbird" size="1"/>
+				</vbox>
+			</hbox>
+
 			<spacer height="20" flex="0"/>
 		</vbox>
 	</prefpane>

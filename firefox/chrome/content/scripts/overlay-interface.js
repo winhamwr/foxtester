@@ -18,6 +18,26 @@ var foxtesterInterface = {
 
 		showHideMenus: function () {//show and hide context menus
 
+			//get selected date and time
+			var currentDate = new Date();
+			var cmonth = currentDate.getMonth();
+			var month = cmonth+1;
+			var MM = "0" + month;
+			MM = MM.substring(MM.length-2, MM.length);
+			var day = currentDate.getDate();
+			var DD = "0" + day;
+			DD = DD.substring(DD.length-2, DD.length);
+			var hours = currentDate.getHours();
+			var HH = "0" + hours;
+			HH = HH.substring(HH.length-2, HH.length);
+			var minutes = currentDate.getMinutes();
+			var MI = "0" + minutes;
+			MI = MI.substring(MI.length-2, MI.length);
+			var seconds = currentDate.getSeconds();
+			var SS = "0" + seconds;
+			SS = SS.substring(SS.length-2, SS.length);
+			var YYYY = currentDate.getFullYear();
+
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -27,9 +47,14 @@ var foxtesterInterface = {
 			var browserlang = this.prefs.getCharPref("language");
 			var architecture = this.prefs.getCharPref("architecture");
 
+			var firefox = this.prefs.getBoolPref("firefox");
+			var fennec = this.prefs.getBoolPref("fennec");
+			var seamonkey = this.prefs.getBoolPref("seamonkey");
+			var thunderbird = this.prefs.getBoolPref("thunderbird");
+
 			//get current watchedfolder url
 			var watchedfolder = this.prefs.getCharPref("watchedfolder");
-			if(watchedfolder === ""){
+			if(watchedfolder === "" || (firefox === false && fennec === false && seamonkey === false && thunderbird === false)){
 				window.openDialog('chrome://foxtester/content/options.xul', 'foxtester-prefs', 'chrome,centerscreen,alwaysRaised');
 			}
 
@@ -40,7 +65,14 @@ var foxtesterInterface = {
 			var showlaunchable = false;
 			var showmakedefault = false;
 			var showrevertdefault = false;
-			var showdownload = false;
+			var showfirefoxcentraldownload = false;
+			var showfirefoxauroradownload = false;
+			var showfirefoxbetadownload = false;
+			var showfenneccentraldownload = false;
+			var showfennecauroradownload = false;
+			var showfennecbetadownload = false;
+			var showthunderbirdcentraldownload = false;
+			var showthunderbirdauroradownload = false;
 
 			//reset menu
 			var installmenupopup = document.getElementById("foxtester-install-selected");
@@ -119,55 +151,290 @@ var foxtesterInterface = {
 			downloadmenupopup.appendChild(downloadnewvbox);
 			var downloadmenuitem;
 
-			//get download links and append menu
-			var fileuri = this.prefs.getCharPref("latestmozillacentral");
+			if(firefox === true){
 
-			if(fileuri !== "empty"){
+				//get download links and append menu
+				var firefoxcentralfileuri = this.prefs.getCharPref("firefoxcentralpath");
+				var firefoxcentralversion = this.prefs.getCharPref("firefoxcentralversion");//this is used only for determining menu icons
+				var firefoxaurorafileuri = this.prefs.getCharPref("firefoxaurorapath");
+				var firefoxauroraversion = this.prefs.getCharPref("firefoxauroraversion");//this is used only for determining menu icons
+				var firefoxbetafileuri = this.prefs.getCharPref("firefoxbetapath");
+				var firefoxbetaversion = this.prefs.getCharPref("firefoxbetaversion");//this is used only for determining menu icons
 
-				//get selected date and time
-				var currentDate = new Date();
-				var cmonth = currentDate.getMonth();
-				var month = cmonth+1;
-				var MM = "0" + month;
-				MM = MM.substring(MM.length-2, MM.length);
-				var day = currentDate.getDate();
-				var DD = "0" + day;
-				DD = DD.substring(DD.length-2, DD.length);
-				var hours = currentDate.getHours();
-				var HH = "0" + hours;
-				HH = HH.substring(HH.length-2, HH.length);
-				var minutes = currentDate.getMinutes();
-				var MI = "0" + minutes;
-				MI = MI.substring(MI.length-2, MI.length);
-				var seconds = currentDate.getSeconds();
-				var SS = "0" + seconds;
-				SS = SS.substring(SS.length-2, SS.length);
-				var YYYY = currentDate.getFullYear();
+				if(firefoxcentralfileuri !== "empty"){
 
-				var filename = fileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");	
+					var firefoxcentralfilename = firefoxcentralfileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
 
-				try{
-					var currentdownload = Components.classes["@mozilla.org/file/local;1"]
-					.createInstance(Components.interfaces.nsILocalFile);
-					currentdownload.initWithPath(watchedfolder);
-					currentdownload.append(filename);
-				}catch(e){
-					//do nothing
+					try{
+						var firefoxcentralcurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						firefoxcentralcurrentdownload.initWithPath(watchedfolder);
+						firefoxcentralcurrentdownload.append(firefoxcentralfilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!firefoxcentralcurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-central");
+						downloadmenuitem.setAttribute("tooltiptext","Firefox");
+						downloadmenuitem.setAttribute("filepath",firefoxcentralfileuri);
+						downloadmenuitem.setAttribute("filename",firefoxcentralfilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfirefoxcentraldownload = true;
+					}
+				}else{
+					showfirefoxcentraldownload = false;
 				}
 
-				if(!currentdownload.exists()){
+				if(firefoxaurorafileuri !== "empty"){
 
-					downloadmenuitem = document.createElement("menuitem");
-					downloadmenuitem.setAttribute("label","latest-mozilla-central");
-					downloadmenuitem.setAttribute("filepath",fileuri);
-					downloadmenuitem.setAttribute("filename",filename);
-					downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
-					downloadnewvbox.appendChild(downloadmenuitem);
-					var showdownload = true;
+					var firefoxaurorafilename = firefoxaurorafileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var firefoxauroracurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						firefoxauroracurrentdownload.initWithPath(watchedfolder);
+						firefoxauroracurrentdownload.append(firefoxaurorafilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!firefoxauroracurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
+						downloadmenuitem.setAttribute("tooltiptext","Firefox");
+						downloadmenuitem.setAttribute("filepath",firefoxaurorafileuri);
+						downloadmenuitem.setAttribute("filename",firefoxaurorafilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfirefoxauroradownload = true;
+					}
+				}else{
+					showfirefoxauroradownload = false;
 				}
+
+				if(firefoxbetafileuri !== "empty"){
+
+					var firefoxbetafilename = firefoxbetafileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var firefoxbetacurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						firefoxbetacurrentdownload.initWithPath(watchedfolder);
+						firefoxbetacurrentdownload.append(firefoxbetafilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!firefoxbetacurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-beta");
+						downloadmenuitem.setAttribute("tooltiptext","Firefox");
+						downloadmenuitem.setAttribute("filepath",firefoxbetafileuri);
+						downloadmenuitem.setAttribute("filename",firefoxbetafilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfirefoxbetadownload = true;
+					}
+				}else{
+					showfirefoxbetadownload = false;
+				}
+
 			}else{
-				var showdownload = false;
+				showfirefoxcentraldownload = false;
+				showfirefoxauroradownload = false;
+				showfirefoxbetadownload = false;
 			}
+
+			if(fennec === true){
+
+				//get download links and append menu
+				var fenneccentralfileuri = this.prefs.getCharPref("fenneccentralpath");
+				var fenneccentralversion = this.prefs.getCharPref("fenneccentralversion");//this is used only for determining menu icons
+				var fennecaurorafileuri = this.prefs.getCharPref("fennecaurorapath");
+				var fennecauroraversion = this.prefs.getCharPref("fennecauroraversion");//this is used only for determining menu icons
+				var fennecbetafileuri = this.prefs.getCharPref("fennecbetapath");
+				var fennecbetaversion = this.prefs.getCharPref("fennecbetaversion");//this is used only for determining menu icons
+
+				if(fenneccentralfileuri !== "empty"){
+
+					var fenneccentralfilename = fenneccentralfileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var fenneccentralcurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						fenneccentralcurrentdownload.initWithPath(watchedfolder);
+						fenneccentralcurrentdownload.append(fenneccentralfilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!fenneccentralcurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-central");
+						downloadmenuitem.setAttribute("tooltiptext","Fennec");
+						downloadmenuitem.setAttribute("filepath",fenneccentralfileuri);
+						downloadmenuitem.setAttribute("filename",fenneccentralfilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfenneccentraldownload = true;
+					}
+				}else{
+					showfenneccentraldownload = false;
+				}
+
+				if(fennecaurorafileuri !== "empty"){
+
+					var fennecaurorafilename = fennecaurorafileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var fennecauroracurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						fennecauroracurrentdownload.initWithPath(watchedfolder);
+						fennecauroracurrentdownload.append(fennecaurorafilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!fennecauroracurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
+						downloadmenuitem.setAttribute("tooltiptext","Fennec");
+						downloadmenuitem.setAttribute("filepath",fennecaurorafileuri);
+						downloadmenuitem.setAttribute("filename",fennecaurorafilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfennecauroradownload = true;
+					}
+				}else{
+					showfennecauroradownload = false;
+				}
+
+				if(fennecbetafileuri !== "empty"){
+
+					var fennecbetafilename = fennecbetafileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var fennecbetacurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						fennecbetacurrentdownload.initWithPath(watchedfolder);
+						fennecbetacurrentdownload.append(fennecbetafilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!fennecbetacurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-mozilla-beta");
+						downloadmenuitem.setAttribute("tooltiptext","Fennec");
+						downloadmenuitem.setAttribute("filepath",fennecbetafileuri);
+						downloadmenuitem.setAttribute("filename",fennecbetafilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showfennecbetadownload = true;
+					}
+				}else{
+					showfennecbetadownload = false;
+				}
+
+			}else{
+				showfenneccentraldownload = false;
+				showfennecauroradownload = false;
+				showfennecbetadownload = false;
+			}
+
+			if(thunderbird === true){
+
+				//get download links and append menu
+				var thunderbirdcentralfileuri = this.prefs.getCharPref("thunderbirdcentralpath");
+				var thunderbirdcentralversion = this.prefs.getCharPref("thunderbirdcentralversion");//this is used only for determining menu icons
+				var thunderbirdaurorafileuri = this.prefs.getCharPref("thunderbirdaurorapath");
+				var thunderbirdauroraversion = this.prefs.getCharPref("thunderbirdauroraversion");//this is used only for determining menu icons
+
+				if(thunderbirdcentralfileuri !== "empty"){
+
+					var thunderbirdcentralfilename = thunderbirdcentralfileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var thunderbirdcentralcurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						thunderbirdcentralcurrentdownload.initWithPath(watchedfolder);
+						thunderbirdcentralcurrentdownload.append(thunderbirdcentralfilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!thunderbirdcentralcurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-comm-central");
+						downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
+						downloadmenuitem.setAttribute("filepath",thunderbirdcentralfileuri);
+						downloadmenuitem.setAttribute("filename",thunderbirdcentralfilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showthunderbirdcentraldownload = true;
+					}
+				}else{
+					showthunderbirdcentraldownload = false;
+				}
+
+				if(thunderbirdaurorafileuri !== "empty"){
+
+					var thunderbirdaurorafilename = thunderbirdaurorafileuri.replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2").replace(/\.[a-z]{2}\..*/,"."+YYYY+MM+DD+".tar.bz2");
+
+					try{
+						var thunderbirdauroracurrentdownload = Components.classes["@mozilla.org/file/local;1"]
+						.createInstance(Components.interfaces.nsILocalFile);
+						thunderbirdauroracurrentdownload.initWithPath(watchedfolder);
+						thunderbirdauroracurrentdownload.append(thunderbirdaurorafilename);
+					}catch(e){
+						//do nothing
+					}
+
+					if(!thunderbirdauroracurrentdownload.exists()){
+
+						downloadmenuitem = document.createElement("menuitem");
+						downloadmenuitem.setAttribute("label","latest-comm-aurora");
+						downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
+						downloadmenuitem.setAttribute("filepath",thunderbirdaurorafileuri);
+						downloadmenuitem.setAttribute("filename",thunderbirdaurorafilename);
+						downloadmenuitem.setAttribute("class","menuitem-iconic");
+						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+						downloadmenuitem.setAttribute('oncommand',"foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');");
+						downloadnewvbox.appendChild(downloadmenuitem);
+						showthunderbirdauroradownload = true;
+					}
+				}else{
+					showthunderbirdauroradownload = false;
+				}
+
+			}else{
+				showthunderbirdcentraldownload = false;
+				showthunderbirdauroradownload = false;
+			}			
 
 			//access database interface
 			var database = Components.classes['@mozilla.org/file/directory_service;1']
@@ -201,7 +468,7 @@ var foxtesterInterface = {
 						//declare file name
 						var media = mediapath.replace(/.*\//,"");
 
-						if ((media.match("firefox") || media.match("mozilladeveloperpreview")) && media.match(".tar.bz2") && !media.match("source") && !media.match(".part")){//match installable firefox archives
+						if ((media.match("firefox-") || media.match("thunderbird-") || media.match("seamonkey-") || media.match("fennec-")) && media.match(".tar.bz2") && !media.match("source") && !media.match(".part")){//match installable firefox archives
 							//add file to downloads table if not exists
 							var statement = mDBConn.createStatement("INSERT INTO downloads (package,filepath,checksum,installed) VALUES (:media_value,:mediapath_value,'no','no')");
 							mDBConn.beginTransaction();
@@ -225,7 +492,7 @@ var foxtesterInterface = {
 						//declare file name
 						var media = mediapath.replace(/.*\//,"");
 
-						if ((media.match("firefox") || media.match("mozilladeveloperpreview")) && media.match(".tar.bz2") && !media.match("source") && media.match(".part")){//match partial download
+						if ((media.match("firefox-") || media.match("thunderbird-") || media.match("seamonkey-") || media.match("fennec-")) && media.match(".tar.bz2") && !media.match("source") && media.match(".part")){//match partial download
 							//delete file from downloads
 							var media = media.replace(/\.part/,"");
 							var statement = mDBConn.createStatement("DELETE FROM downloads WHERE package= :media_value");
@@ -239,7 +506,7 @@ var foxtesterInterface = {
 				}
 
 				//fetch data from downloads table
-				var statement = mDBConn.createStatement("SELECT * FROM downloads");
+				var statement = mDBConn.createStatement("SELECT * FROM downloads ORDER BY package desc");
 				mDBConn.beginTransaction();
 				while (statement.executeStep()) {
 					//fetch row values
@@ -256,18 +523,140 @@ var foxtesterInterface = {
 							var showremovable = true;
 
 							//append install menuitems
-							installmenuitem = document.createElement("menuitem");
-							installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
-							installmenuitem.setAttribute("package",package);
-							installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
-							installnewvbox.appendChild(installmenuitem);
+							if(package.match(/fennec/) && fennec === true){
+								installmenuitem = document.createElement("menuitem");
+								installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								installmenuitem.setAttribute("package",package);
+								installmenuitem.setAttribute("class","menuitem-iconic");
+								installmenuitem.setAttribute("tooltiptext","Fennec");
+								installmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installnewvbox.appendChild(installmenuitem);
+							}else if(package.match(/seamonkey/) && seamonkey === true){
+								installmenuitem = document.createElement("menuitem");
+								installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								installmenuitem.setAttribute("package",package);
+								installmenuitem.setAttribute("class","menuitem-iconic");
+								installmenuitem.setAttribute("tooltiptext","Seamonkey");
+								installmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
+								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installnewvbox.appendChild(installmenuitem);
+							}else if(package.match(/thunderbird/) && thunderbird === true){
+								installmenuitem = document.createElement("menuitem");
+								installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								installmenuitem.setAttribute("package",package);
+								installmenuitem.setAttribute("tooltiptext","Thunderbird");
+								if(package.match(thunderbirdcentralversion)){
+									installmenuitem.setAttribute("class","menuitem-iconic");
+									installmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else if(package.match(thunderbirdauroraversion)){
+									installmenuitem.setAttribute("class","menuitem-iconic");
+									installmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										installmenuitem.setAttribute("class","menuitem-iconic");
+										installmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird-unknown16.png");
+									}else{
+										installmenuitem.setAttribute("class","menuitem-iconic");
+										installmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
+									}
+								}
+								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installnewvbox.appendChild(installmenuitem);
+							}else if(package.match(/firefox/) && firefox === true){
+								installmenuitem = document.createElement("menuitem");
+								installmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								installmenuitem.setAttribute("package",package);
+								installmenuitem.setAttribute("tooltiptext","Firefox");
+								if(package.match(firefoxcentralversion)){
+									installmenuitem.setAttribute("class","menuitem-iconic");
+									installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+								}else if(package.match(firefoxauroraversion)){
+									installmenuitem.setAttribute("class","menuitem-iconic");
+									installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+								}else if(package.match(firefoxbetaversion)){
+									installmenuitem.setAttribute("class","menuitem-iconic");
+									installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										installmenuitem.setAttribute("class","menuitem-iconic");
+										installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-unknown16.png");
+									}else{
+										installmenuitem.setAttribute("class","menuitem-iconic");
+										installmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
+									}
+								}
+								installmenuitem.setAttribute('oncommand',"foxtesterInterface.installSelected(this.getAttribute('package'));");
+								installnewvbox.appendChild(installmenuitem);
+							}
 
 							//append remove menuitems
-							removemenuitem = document.createElement("menuitem");
-							removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
-							removemenuitem.setAttribute("package",package);
-							removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
-							removenewvbox.appendChild(removemenuitem);
+							if(package.match(/fennec/) && fennec === true){
+								removemenuitem = document.createElement("menuitem");
+								removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								removemenuitem.setAttribute("package",package);
+								removemenuitem.setAttribute("class","menuitem-iconic");
+								removemenuitem.setAttribute("tooltiptext","Fennec");
+								removemenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removenewvbox.appendChild(removemenuitem);
+							}else if(package.match(/seamonkey/) && seamonkey === true){
+								removemenuitem = document.createElement("menuitem");
+								removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								removemenuitem.setAttribute("package",package);
+								removemenuitem.setAttribute("class","menuitem-iconic");
+								removemenuitem.setAttribute("tooltiptext","Seamonkey");
+								removemenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
+								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removenewvbox.appendChild(removemenuitem);
+							}else if(package.match(/thunderbird/) && thunderbird === true){
+								removemenuitem = document.createElement("menuitem");
+								removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								removemenuitem.setAttribute("package",package);
+								removemenuitem.setAttribute("tooltiptext","Thunderbird");
+								if(package.match(thunderbirdcentralversion)){
+									removemenuitem.setAttribute("class","menuitem-iconic");
+									removemenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else if(package.match(thunderbirdauroraversion)){
+									removemenuitem.setAttribute("class","menuitem-iconic");
+									removemenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										removemenuitem.setAttribute("class","menuitem-iconic");
+										removemenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird-unknown16.png");
+									}else{
+										removemenuitem.setAttribute("class","menuitem-iconic");
+										removemenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
+									}
+								}
+								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removenewvbox.appendChild(removemenuitem);
+							}else if(package.match(/firefox/) && firefox === true){
+								removemenuitem = document.createElement("menuitem");
+								removemenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								removemenuitem.setAttribute("package",package);
+								removemenuitem.setAttribute("tooltiptext","Firefox");
+								if(package.match(firefoxcentralversion)){
+									removemenuitem.setAttribute("class","menuitem-iconic");
+									removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+								}else if(package.match(firefoxauroraversion)){
+									removemenuitem.setAttribute("class","menuitem-iconic");
+									removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+								}else if(package.match(firefoxbetaversion)){
+									removemenuitem.setAttribute("class","menuitem-iconic");
+									removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										removemenuitem.setAttribute("class","menuitem-iconic");
+										removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-unknown16.png");
+									}else{
+										removemenuitem.setAttribute("class","menuitem-iconic");
+										removemenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
+									}
+								}
+								removemenuitem.setAttribute('oncommand',"foxtesterInterface.removeSelected(this.getAttribute('package'));");
+								removenewvbox.appendChild(removemenuitem);
+							}
 						}
 						if (installed === "yes"){//match if file has been installed and set uninstall/launch menus to be displayed
 
@@ -276,26 +665,173 @@ var foxtesterInterface = {
 							//set launch menu to be displayed
 							var showlaunchable = true;
 							//set make-default menu to be displayed
-							var showmakedefault = true;
+							if(package.match(/firefox/) && firefox === true){
+								var showmakedefault = true;
+							}
 
 							//append uninstall menuitems
-							uninstallmenuitem = document.createElement("menuitem");
-							uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
-							uninstallmenuitem.setAttribute("package",package);
-							uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
-							uninstallnewvbox.appendChild(uninstallmenuitem);
+							if(package.match(/fennec/) && fennec === true){
+								uninstallmenuitem = document.createElement("menuitem");
+								uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								uninstallmenuitem.setAttribute("package",package);
+								uninstallmenuitem.setAttribute("class","menuitem-iconic");
+								uninstallmenuitem.setAttribute("tooltiptext","Fennec");
+								uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallnewvbox.appendChild(uninstallmenuitem);
+							}else if(package.match(/seamonkey/) && seamonkey === true){
+								uninstallmenuitem = document.createElement("menuitem");
+								uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								uninstallmenuitem.setAttribute("package",package);
+								uninstallmenuitem.setAttribute("class","menuitem-iconic");
+								uninstallmenuitem.setAttribute("tooltiptext","Seamonkey");
+								uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
+								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallnewvbox.appendChild(uninstallmenuitem);
+							}else if(package.match(/thunderbird/) && thunderbird === true){
+								uninstallmenuitem = document.createElement("menuitem");
+								uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								uninstallmenuitem.setAttribute("package",package);
+								uninstallmenuitem.setAttribute("tooltiptext","Thunderbird");
+								if(package.match(thunderbirdcentralversion)){
+									uninstallmenuitem.setAttribute("class","menuitem-iconic");
+									uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else if(package.match(thunderbirdauroraversion)){
+									uninstallmenuitem.setAttribute("class","menuitem-iconic");
+									uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										uninstallmenuitem.setAttribute("class","menuitem-iconic");
+										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird-unknown16.png");
+									}else{
+										uninstallmenuitem.setAttribute("class","menuitem-iconic");
+										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
+									}
+								}
+								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallnewvbox.appendChild(uninstallmenuitem);
+							}else if(package.match(/firefox/) && firefox === true){
+								uninstallmenuitem = document.createElement("menuitem");
+								uninstallmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								uninstallmenuitem.setAttribute("package",package);
+								uninstallmenuitem.setAttribute("tooltiptext","Firefox");
+								if(package.match(firefoxcentralversion)){
+									uninstallmenuitem.setAttribute("class","menuitem-iconic");
+									uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+								}else if(package.match(firefoxauroraversion)){
+									uninstallmenuitem.setAttribute("class","menuitem-iconic");
+									uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+								}else if(package.match(firefoxbetaversion)){
+									uninstallmenuitem.setAttribute("class","menuitem-iconic");
+									uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										uninstallmenuitem.setAttribute("class","menuitem-iconic");
+										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-unknown16.png");
+									}else{
+										uninstallmenuitem.setAttribute("class","menuitem-iconic");
+										uninstallmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
+									}
+								}
+								uninstallmenuitem.setAttribute('oncommand',"foxtesterInterface.uninstallSelected(this.getAttribute('package'));");
+								uninstallnewvbox.appendChild(uninstallmenuitem);
+							}
+
 							//append launch menuitems
-							launchmenuitem = document.createElement("menuitem");
-							launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
-							launchmenuitem.setAttribute("package",package);
-							launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
-							launchnewvbox.appendChild(launchmenuitem);
+							if(package.match(/fennec/) && fennec === true){
+								launchmenuitem = document.createElement("menuitem");
+								launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								launchmenuitem.setAttribute("package",package);
+								launchmenuitem.setAttribute("class","menuitem-iconic");
+								launchmenuitem.setAttribute("tooltiptext","Fennec");
+								launchmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchnewvbox.appendChild(launchmenuitem);
+							}else if(package.match(/seamonkey/) && seamonkey === true){
+								launchmenuitem = document.createElement("menuitem");
+								launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								launchmenuitem.setAttribute("package",package);
+								launchmenuitem.setAttribute("class","menuitem-iconic");
+								launchmenuitem.setAttribute("tooltiptext","Seamonkey");
+								launchmenuitem.setAttribute("image","chrome://foxtester/skin/seamonkey16.png");
+								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchnewvbox.appendChild(launchmenuitem);
+							}else if(package.match(/thunderbird/) && thunderbird === true){
+								launchmenuitem = document.createElement("menuitem");
+								launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								launchmenuitem.setAttribute("package",package);
+								launchmenuitem.setAttribute("tooltiptext","Thunderbird");
+								if(package.match(thunderbirdcentralversion)){
+									launchmenuitem.setAttribute("class","menuitem-iconic");
+									launchmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else if(package.match(thunderbirdauroraversion)){
+									launchmenuitem.setAttribute("class","menuitem-iconic");
+									launchmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										launchmenuitem.setAttribute("class","menuitem-iconic");
+										launchmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird-unknown16.png");
+									}else{
+										launchmenuitem.setAttribute("class","menuitem-iconic");
+										launchmenuitem.setAttribute("image","chrome://foxtester/skin/thunderbird16.png");
+									}
+								}
+								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchnewvbox.appendChild(launchmenuitem);
+							}else if(package.match(/firefox/) && firefox === true){
+								launchmenuitem = document.createElement("menuitem");
+								launchmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));
+								launchmenuitem.setAttribute("package",package);
+								launchmenuitem.setAttribute("tooltiptext","Firefox");
+								if(package.match(firefoxcentralversion)){
+									launchmenuitem.setAttribute("class","menuitem-iconic");
+									launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+								}else if(package.match(firefoxauroraversion)){
+									launchmenuitem.setAttribute("class","menuitem-iconic");
+									launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+								}else if(package.match(firefoxbetaversion)){
+									launchmenuitem.setAttribute("class","menuitem-iconic");
+									launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										launchmenuitem.setAttribute("class","menuitem-iconic");
+										launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-unknown16.png");
+									}else{
+										launchmenuitem.setAttribute("class","menuitem-iconic");
+										launchmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
+									}
+								}
+								launchmenuitem.setAttribute('oncommand',"foxtesterInterface.launchSelected(this.getAttribute('package'));");
+								launchnewvbox.appendChild(launchmenuitem);
+							}
+
 							//append makedefault menuitems
-							makedefaultmenuitem = document.createElement("menuitem");
-							makedefaultmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
-							makedefaultmenuitem.setAttribute("package",package);
-							makedefaultmenuitem.setAttribute('oncommand',"foxtesterInterface.makeDefault(this.getAttribute('package'));");
-							makedefaultnewvbox.appendChild(makedefaultmenuitem);
+							if(!package.match(/fennec/) && !package.match(/seamonkey/) && !package.match(/thunderbird/) && firefox === true){
+								makedefaultmenuitem = document.createElement("menuitem");
+								makedefaultmenuitem.setAttribute("label",package.replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,""));	
+								makedefaultmenuitem.setAttribute("package",package);
+								makedefaultmenuitem.setAttribute("tooltiptext","Firefox");
+								if(package.match(firefoxcentralversion)){
+									makedefaultmenuitem.setAttribute("class","menuitem-iconic");
+									makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+								}else if(package.match(firefoxauroraversion)){
+									makedefaultmenuitem.setAttribute("class","menuitem-iconic");
+									makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+								}else if(package.match(firefoxbetaversion)){
+									makedefaultmenuitem.setAttribute("class","menuitem-iconic");
+									makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+								}else{
+									if(package.match(/.*\.[0-9]{8}\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}a.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}b.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}rc.*\.tar\.bz2/) || package.match(/firefox-[0-9]{1}\.[0-9]{1,2}[a-z]{1,4}.*\.tar\.bz2/)){
+										makedefaultmenuitem.setAttribute("class","menuitem-iconic");
+										makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-unknown16.png");
+									}else{
+										makedefaultmenuitem.setAttribute("class","menuitem-iconic");
+										makedefaultmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-release16.png");
+									}
+								}
+								makedefaultmenuitem.setAttribute('oncommand',"foxtesterInterface.makeDefault(this.getAttribute('package'));");
+								makedefaultnewvbox.appendChild(makedefaultmenuitem);
+							}
 						}
 					}
 				}
@@ -325,11 +861,70 @@ var foxtesterInterface = {
 				var showrevertdefault = true;
 			}else{
 				var showrevertdefault = false;
-				if(showuninstallable === true){
-					var showmakedefault = true;
-				}else{
-					var showmakedefault = false;
-				}
+			}
+
+			if(firefox === true){
+				//hide browse menu
+				document.getElementById("foxtester-browse-selected-releases-firefox").hidden = false;
+				document.getElementById("foxtester-browse-selected-beta-firefox").hidden = false;
+				document.getElementById("foxtester-browse-selected-aurora-firefox").hidden = false;
+				document.getElementById("foxtester-browse-selected-central-firefox").hidden = false;
+				document.getElementById("foxtester-separator-firefox").hidden = false;
+			}else{
+				document.getElementById("foxtester-browse-selected-releases-firefox").hidden = true;
+				document.getElementById("foxtester-browse-selected-beta-firefox").hidden = true;
+				document.getElementById("foxtester-browse-selected-aurora-firefox").hidden = true;
+				document.getElementById("foxtester-browse-selected-central-firefox").hidden = true;
+				document.getElementById("foxtester-separator-firefox").hidden = true;
+			}
+
+			if(fennec === true){
+				//hide browse menu
+				document.getElementById("foxtester-browse-selected-releases-fennec").hidden = false;
+				document.getElementById("foxtester-browse-selected-beta-fennec").hidden = false;
+				document.getElementById("foxtester-browse-selected-aurora-fennec").hidden = false;
+				document.getElementById("foxtester-browse-selected-central-fennec").hidden = false;
+				document.getElementById("foxtester-separator-fennec").hidden = false;
+			}else{
+				document.getElementById("foxtester-browse-selected-releases-fennec").hidden = true;
+				document.getElementById("foxtester-browse-selected-beta-fennec").hidden = true;
+				document.getElementById("foxtester-browse-selected-aurora-fennec").hidden = true;
+				document.getElementById("foxtester-browse-selected-central-fennec").hidden = true;
+				document.getElementById("foxtester-separator-fennec").hidden = true;
+			}
+
+			if(seamonkey === true){
+				//hide browse menu
+				document.getElementById("foxtester-browse-selected-releases-seamonkey").hidden = false;
+				document.getElementById("foxtester-browse-selected-central-seamonkey").hidden = false;
+				document.getElementById("foxtester-separator-seamonkey").hidden = false;
+			}else{
+				document.getElementById("foxtester-browse-selected-releases-seamonkey").hidden = true;
+				document.getElementById("foxtester-browse-selected-central-seamonkey").hidden = true;
+				document.getElementById("foxtester-separator-seamonkey").hidden = true;
+			}
+
+			if(thunderbird === true){
+				//hide browse menu
+				document.getElementById("foxtester-browse-selected-releases-thunderbird").hidden = false;
+				document.getElementById("foxtester-browse-selected-aurora-thunderbird").hidden = false;
+				document.getElementById("foxtester-browse-selected-central-thunderbird").hidden = false;
+			}else{
+				document.getElementById("foxtester-browse-selected-releases-thunderbird").hidden = true;
+				document.getElementById("foxtester-browse-selected-aurora-thunderbird").hidden = true;
+				document.getElementById("foxtester-browse-selected-central-thunderbird").hidden = true;
+			}
+
+			if(fennec === false && seamonkey === false && thunderbird === false){
+				try{
+					document.getElementById("foxtester-separator-firefox").hidden = true;
+				}catch(e){
+					//do nothing
+				}					
+			}else if(fennec === true && seamonkey === false && thunderbird === false){
+				document.getElementById("foxtester-separator-fennec").hidden = true;
+			}else if(seamonkey === true && thunderbird === false){
+				document.getElementById("foxtester-separator-seamonkey").hidden = true;
 			}
 
 			if (showinstallable === false){//match if install menu should not be displayed
@@ -388,7 +983,16 @@ var foxtesterInterface = {
 				document.getElementById("foxtester-uninstall-separator").hidden = false;
 			}
 
-			if (showdownload === false){//match if install menu should not be displayed
+			if (showfirefoxcentraldownload === false 
+					&& showfirefoxauroradownload === false 
+					&& showfirefoxbetadownload === false
+					&& showfenneccentraldownload === false 
+					&& showfennecauroradownload === false 
+					&& showfennecbetadownload === false
+					&& showthunderbirdcentraldownload === false 
+					&& showthunderbirdauroradownload === false 
+
+			){//match if install menu should not be displayed
 				//hide dowload menu
 				document.getElementById("foxtester-download").hidden = true;
 			}else{
@@ -464,16 +1068,47 @@ var foxtesterInterface = {
 
 			if(tempscript.exists() && !tempscript.isDirectory() && profile.exists() && profile.isDirectory() && installfolder.exists() && installfolder.isDirectory() && pluginfolder.exists() && pluginfolder.isDirectory() && sourcefile.exists() && !sourcefile.isDirectory()){//check everything exists
 
-				//declare command line to create new profile
-				var thirdline = "firefox -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
-				//declare command line to change dir to installation folder
-				var fourthline = "cd \'"+installfolder.path+"\'";
-				//declare command to extract source file
-				var fifthline = "tar -xvjf \'"+sourcefile.path+"\'";
-				//declare commadn line to change dir to home
-				var sixthline = "cd";
-				//declare command line to copy plugins to new installation folder
-				var seventhline = "rm -fr \'"+installfolder.path+"/firefox/plugins/\' && ln -s \'"+pluginfolder.path+"\' \'"+installfolder.path+"/firefox/plugins\'";
+				if(profilename.match(/fennec/)){
+					//declare command line to change dir to installation folder
+					var thirdline = "cd \'"+installfolder.path+"\'";
+					//declare command to extract source file
+					var fourthline = "tar -xvjf \'"+sourcefile.path+"\'";
+					//declare command line to change dir to home
+					var fifthline = "cd";			
+					//declare command line to create new profile
+					var sixthline = ""+installfolder.path+"/fennec/fennec -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
+				}else if(profilename.match(/seamonkey/)){
+					//declare command line to change dir to installation folder
+					var thirdline = "cd \'"+installfolder.path+"\'";
+					//declare command to extract source file
+					var fourthline = "tar -xvjf \'"+sourcefile.path+"\'";
+					//declare command line to change dir to home
+					var fifthline = "cd";			
+					//declare command line to create new profile
+					var sixthline = ""+installfolder.path+"/seamonkey/seamonkey -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
+					//declare command line to copy plugins to new installation folder
+					var seventhline = "rm -fr \'"+installfolder.path+"/seamonkey/plugins/\' && ln -s \'"+pluginfolder.path+"\' \'"+installfolder.path+"/seamonkey/plugins\'";
+				}else if(profilename.match(/thunderbird/)){
+					//declare command line to change dir to installation folder
+					var thirdline = "cd \'"+installfolder.path+"\'";
+					//declare command to extract source file
+					var fourthline = "tar -xvjf \'"+sourcefile.path+"\'";
+					//declare command line to change dir to home
+					var fifthline = "cd";			
+					//declare command line to create new profile
+					var sixthline = ""+installfolder.path+"/thunderbird/thunderbird -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
+				}else if(profilename.match(/firefox/)){
+					//declare command line to change dir to installation folder
+					var thirdline = "cd \'"+installfolder.path+"\'";
+					//declare command to extract source file
+					var fourthline = "tar -xvjf \'"+sourcefile.path+"\'";
+					//declare command line to change dir to home
+					var fifthline = "cd";
+					//declare command line to create new profile
+					var sixthline = "firefox -no-remote -CreateProfile \""+profilename+" "+profile.path+"\"";
+					//declare command line to copy plugins to new installation folder
+					var seventhline = "rm -fr \'"+installfolder.path+"/firefox/plugins/\' && ln -s \'"+pluginfolder.path+"\' \'"+installfolder.path+"/firefox/plugins\'";
+				}
 
 				//write command lines to temporary script
 				var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -492,8 +1127,10 @@ var foxtesterInterface = {
 				converter.writeString(fifthline);
 				converter.writeString(newline);
 				converter.writeString(sixthline);
-				converter.writeString(newline);
-				converter.writeString(seventhline);
+				if(!profilename.match(/fennec/) && !profilename.match(/thunderbird/) ){
+					converter.writeString(newline);
+					converter.writeString(seventhline);
+				}
 				converter.close();
 
 				//execute script
@@ -580,8 +1217,19 @@ var foxtesterInterface = {
 
 			if(tempscript.exists() && !tempscript.isDirectory() && installfolder.exists() && installfolder.isDirectory()){//check if script and install folde exists
 
-				//declare command line
-				var commandline = "\'"+installfolder.path+"/firefox/firefox\' -P -no-remote \""+profilename+"\"";
+				if(profilename.match(/fennec/)){
+					//declare command line
+					var commandline = "\'"+installfolder.path+"/fennec/fennec\' -P -no-remote \""+profilename+"\"";
+				}else if(profilename.match(/seamonkey/)){
+					//declare command line
+					var commandline = "\'"+installfolder.path+"/seamonkey/seamonkey\' -P -no-remote \""+profilename+"\"";
+				}else if(profilename.match(/thunderbird/)){
+					//declare command line
+					var commandline = "\'"+installfolder.path+"/thunderbird/thunderbird\' -P -no-remote \""+profilename+"\"";
+				}else if(profilename.match(/firefox/)){
+					//declare command line
+					var commandline = "\'"+installfolder.path+"/firefox/firefox\' -P -no-remote \""+profilename+"\"";
+				}
 
 				//write commands to script
 				var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -638,8 +1286,15 @@ var foxtesterInterface = {
 
 			if(tempscript.exists() && !tempscript.isDirectory() && installfolder.exists() && installfolder.isDirectory()){//check if script and install folder exists
 
-				//declare command line
-				var firstline = "unlink \'"+installfolder.path+"/firefox/plugins\'";
+				if(!aFile.match(/fennec/) && !aFile.match(/thunderbird/)){
+					if(aFile.match(/seamonkey/)){
+						//declare command line
+						var firstline = "unlink \'"+installfolder.path+"/seamonkey/plugins\'";	
+					}else{
+						//declare command line
+						var firstline = "unlink \'"+installfolder.path+"/firefox/plugins\'";	
+					}			
+				}
 				var secondline = "rm -fr \'"+installfolder.path+"\'";
 
 				//write commands to script
@@ -652,8 +1307,10 @@ var foxtesterInterface = {
 				converter.writeString(bashline);
 				converter.writeString(newline);
 				converter.writeString(newline);
-				converter.writeString(firstline);
-				converter.writeString(newline);
+				if(!aFile.match(/fennec/) && !aFile.match(/thunderbird/)){
+					converter.writeString(firstline);
+					converter.writeString(newline);
+				}
 				converter.writeString(secondline);
 				converter.close();
 
@@ -678,13 +1335,28 @@ var foxtesterInterface = {
 				profile.remove(true);
 			}
 
-			//initiate profile.ini file
-			var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
-			.getService(Components.interfaces.nsIProperties)
-			.get("Home", Components.interfaces.nsILocalFile);
-			profilesini.append(".mozilla");
-			profilesini.append("firefox");
-			profilesini.append("profiles.ini");
+			if(aFile.match(/thunderbird/)){
+				//initiate profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".thunderbird");
+				profilesini.append("profiles.ini");
+			}else{
+				//initiate profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".mozilla");
+				if(aFile.match(/fennec/)){
+					profilesini.append("fennec");
+				}else if(aFile.match(/seamonkey/)){
+					profilesini.append("seamonkey");
+				}else{
+					profilesini.append("firefox");
+				}
+				profilesini.append("profiles.ini");
+			}
 
 			var data = "";
 			//read profile.ini
@@ -698,7 +1370,7 @@ var foxtesterInterface = {
 				cstream.readString(-1, str);
 				data = str.value;
 				//match patterns
-				var profilepathline = "Path="+profile.path.replace(/.*\.mozilla\/firefox\//,"");
+				var profilepathline = "Path="+profile.path;
 				var profilenameline = "Name="+profilename;
 				//replace matched lines
 				var newdata = data.replace(profilenameline,"");
@@ -982,6 +1654,113 @@ var foxtesterInterface = {
 				converter.init(foStream, "UTF-8", 0, 0);
 				converter.writeString(newdata);
 				converter.close();
+
+				//initiate fennec profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".mozilla");
+				profilesini.append("fennec");
+				profilesini.append("profiles.ini");
+
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
+
+				//initiate seamonkey profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".mozilla");
+				profilesini.append("seamonkey");
+				profilesini.append("profiles.ini");
+
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
+
+				//initiate thunderbird profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".thunderbird");
+				profilesini.append("profiles.ini");
+
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
 
 				//access database interface
 				var database = Components.classes['@mozilla.org/file/directory_service;1']

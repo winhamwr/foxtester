@@ -24,10 +24,22 @@
 		<menupopup id="foxtester-contextmenu" onpopupshowing="foxtesterInterface.showHideMenus();">
 			<menu id="foxtester-browse" label="&Browse;" class="menu-iconic" image="chrome://foxtester/skin/search16.png">
 				<menupopup id="foxtester-browse-selected">
-					<menuitem id="foxtester-browse-selected-releases" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/release16.png" oncommand="foxtesterFileManager.openLink('releases');"/>
-					<menuitem id="foxtester-browse-selected-beta" label="latest-mozilla-beta" class="menuitem-iconic" image="chrome://foxtester/skin/beta16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-beta');"/>
-					<menuitem id="foxtester-browse-selected-aurora" label="latest-mozilla-aurora" class="menuitem-iconic" image="chrome://foxtester/skin/aurora16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-aurora');"/>
-					<menuitem id="foxtester-browse-selected-central" label="latest-mozilla-central" class="menuitem-iconic" image="chrome://foxtester/skin/nightly16.png" oncommand="foxtesterFileManager.openLink('latest-mozilla-central');"/>
+					<menuitem id="foxtester-browse-selected-releases-firefox" tooltiptext="Firefox" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/firefox-release16.png" oncommand="foxtesterFileManager.openLink('firefox-releases');"/>
+					<menuitem id="foxtester-browse-selected-beta-firefox" tooltiptext="Firefox" label="latest-mozilla-beta" class="menuitem-iconic" image="chrome://foxtester/skin/firefox-beta16.png" oncommand="foxtesterFileManager.openLink('firefox-beta');"/>
+					<menuitem id="foxtester-browse-selected-aurora-firefox" tooltiptext="Firefox" label="latest-mozilla-aurora" class="menuitem-iconic" image="chrome://foxtester/skin/firefox-aurora16.png" oncommand="foxtesterFileManager.openLink('firefox-aurora');"/>
+					<menuitem id="foxtester-browse-selected-central-firefox" tooltiptext="Firefox" label="latest-mozilla-central" class="menuitem-iconic" image="chrome://foxtester/skin/firefox-nightly16.png" oncommand="foxtesterFileManager.openLink('firefox-central');"/>
+					<menuseparator id="foxtester-separator-firefox"/>
+					<menuitem id="foxtester-browse-selected-releases-fennec" tooltiptext="Fennec" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/fennec16.png" oncommand="foxtesterFileManager.openLink('fennec-releases');"/>
+					<menuitem id="foxtester-browse-selected-beta-fennec" tooltiptext="Fennec" label="latest-mozilla-beta" class="menuitem-iconic" image="chrome://foxtester/skin/fennec16.png" oncommand="foxtesterFileManager.openLink('fennec-beta');"/>
+					<menuitem id="foxtester-browse-selected-aurora-fennec" tooltiptext="Fennec" label="latest-mozilla-aurora" class="menuitem-iconic" image="chrome://foxtester/skin/fennec16.png" oncommand="foxtesterFileManager.openLink('fennec-aurora');"/>
+					<menuitem id="foxtester-browse-selected-central-fennec" tooltiptext="Fennec" label="latest-mozilla-central" class="menuitem-iconic" image="chrome://foxtester/skin/fennec16.png" oncommand="foxtesterFileManager.openLink('fennec-central');"/>
+					<menuseparator id="foxtester-separator-fennec"/>
+					<menuitem id="foxtester-browse-selected-releases-seamonkey" tooltiptext="Seamonkey" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/seamonkey16.png" oncommand="foxtesterFileManager.openLink('seamonkey-releases');"/>
+					<menuitem id="foxtester-browse-selected-central-seamonkey" tooltiptext="Seamonkey" label="latest-comm-central-trunk" class="menuitem-iconic" image="chrome://foxtester/skin/seamonkey16.png" oncommand="foxtesterFileManager.openLink('seamonkey-central');"/>
+					<menuseparator id="foxtester-separator-seamonkey"/>
+					<menuitem id="foxtester-browse-selected-releases-thunderbird" tooltiptext="Thunderbird" label="releases" class="menuitem-iconic" image="chrome://foxtester/skin/thunderbird16.png" oncommand="foxtesterFileManager.openLink('thunderbird-releases');"/>
+					<menuitem id="foxtester-browse-selected-aurora-thunderbird" tooltiptext="Thunderbird" label="latest-comm-aurora" class="menuitem-iconic" image="chrome://foxtester/skin/miramar16.png" oncommand="foxtesterFileManager.openLink('thunderbird-aurora');"/>
+					<menuitem id="foxtester-browse-selected-central-thunderbird" tooltiptext="Thunderbird" label="latest-comm-central" class="menuitem-iconic" image="chrome://foxtester/skin/miramar16.png" oncommand="foxtesterFileManager.openLink('thunderbird-central');"/>
 				</menupopup>
 			</menu>
 			<menu id="foxtester-download" label="&Download;" class="menu-iconic" image="chrome://foxtester/skin/download16.png">

@@ -36,32 +36,141 @@ const FoxTesterWatchedFolderObserver =
 				profilesini.append(".mozilla");
 				profilesini.append("firefox");
 				profilesini.append("profiles.ini");
+				
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
 
-				var data = "";
-				//read profile.ini
-				var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-				.createInstance(Components.interfaces.nsIFileInputStream);
-				var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
-				.createInstance(Components.interfaces.nsIConverterInputStream);
-				fstream.init(profilesini, -1, 0, 0);
-				cstream.init(fstream, "UTF-8", 0, 0);
-				let (str = {}) {
-					cstream.readString(-1, str);
-					data = str.value;
-					//replace foxtester lines
-					var newdata = data.replace(/.*foxtester.*/g,"");
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
 				}
-				cstream.close();
 
-				//write new data into profile.ini
-				var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-				.createInstance(Components.interfaces.nsIFileOutputStream);
-				foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
-				var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
-				.createInstance(Components.interfaces.nsIConverterOutputStream);
-				converter.init(foStream, "UTF-8", 0, 0);
-				converter.writeString(newdata);
-				converter.close();
+				//initiate profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".mozilla");
+				profilesini.append("fennec");
+				profilesini.append("profiles.ini");
+				
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
+				
+				//initiate profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".mozilla");
+				profilesini.append("seamonkey");
+				profilesini.append("profiles.ini");
+				
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
+				
+				//initiate profile.ini file
+				var profilesini = Components.classes['@mozilla.org/file/directory_service;1']
+				.getService(Components.interfaces.nsIProperties)
+				.get("Home", Components.interfaces.nsILocalFile);
+				profilesini.append(".thunderbird");
+				profilesini.append("profiles.ini");
+				
+				if(profilesini.exists()){
+					var data = "";
+					//read profile.ini
+					var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+					.createInstance(Components.interfaces.nsIFileInputStream);
+					var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterInputStream);
+					fstream.init(profilesini, -1, 0, 0);
+					cstream.init(fstream, "UTF-8", 0, 0);
+					let (str = {}) {
+						cstream.readString(-1, str);
+						data = str.value;
+						//replace foxtester lines
+						var newdata = data.replace(/.*foxtester.*/g,"");
+					}
+					cstream.close();
+
+					//write new data into profile.ini
+					var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Components.interfaces.nsIFileOutputStream);
+					foStream.init(profilesini, 0x02 | 0x08 | 0x20, 0666, 0);
+					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+					.createInstance(Components.interfaces.nsIConverterOutputStream);
+					converter.init(foStream, "UTF-8", 0, 0);
+					converter.writeString(newdata);
+					converter.close();
+				}
 
 				//access database interface
 				var database = Components.classes['@mozilla.org/file/directory_service;1']

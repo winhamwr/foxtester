@@ -2,12 +2,90 @@ var foxtesterFileManager = {
 
 		openLink:function(aSite) {
 
-			if(aSite == "releases" || aSite == "nightly"){
-				var url = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/"+aSite+"/";
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.foxtester.");
+
+			var language = this.prefs.getCharPref("language");
+
+			if(aSite == "firefox-releases"){
+				var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/";
+			}
+			if(aSite == "firefox-beta"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-beta/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-beta-l10n/";
+				}
+			}
+			if(aSite == "firefox-aurora"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-aurora/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-aurora-l10n/";
+				}				
+			}
+			if(aSite == "firefox-central"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-central/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-mozilla-central-l10n/";
+				}				
 			}
 
-			if(aSite.match(/latest-mozilla-/)){
-				var url = "ftp://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/"+aSite+"/";
+			if(aSite == "fennec-releases"){
+				var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/releases/";
+			}
+			if(aSite == "fennec-beta"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-beta-linux/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-beta-linux-l10n/";
+				}
+			}
+			if(aSite == "fennec-aurora"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-aurora-linux/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-aurora-linux-l10n/";
+				}
+			}
+			if(aSite == "fennec-central"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-linux/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-linux-l10n/";
+				}
+			}
+
+			if(aSite == "thunderbird-releases"){
+				var url = "http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/";
+			}
+			if(aSite == "thunderbird-aurora"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/thunderbird/nightly/latest-comm-aurora/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/thunderbird/nightly/latest-comm-aurora-l10n/";
+				}
+			}
+			if(aSite == "thunderbird-central"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/thunderbird/nightly/latest-comm-central/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/thunderbird/nightly/latest-comm-central-l10n/";
+				}
+			}
+
+			if(aSite == "seamonkey-releases"){
+				var url = "http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/";
+			}
+			if(aSite == "seamonkey-central"){
+				if(language === "en-US"){
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/seamonkey/nightly/latest-comm-central-trunk/";
+				}else{
+					var url = "http://ftp.mozilla.org/pub/mozilla.org/seamonkey/nightly/latest-comm-central-trunk-l10n/";
+				}
 			}
 
 			if(aSite.match("file:") || aSite.match("http:")){

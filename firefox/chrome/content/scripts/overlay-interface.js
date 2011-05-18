@@ -452,6 +452,8 @@ var foxtesterInterface = {
 				var folder = Components.classes["@mozilla.org/file/local;1"]
 				.createInstance(Components.interfaces.nsILocalFile);
 				folder.initWithPath(watchedfolder);
+				
+				mDBConn.beginTransaction();
 
 				if (folder.exists() && folder.isDirectory() && folder !== ""){//match if watchedfolder is not default and if exists, then list files and add installables to database
 
@@ -471,11 +473,9 @@ var foxtesterInterface = {
 						if ((media.match("firefox-") || media.match("thunderbird-") || media.match("seamonkey-") || media.match("fennec-")) && media.match(".tar.bz2") && !media.match("source") && !media.match(".part")){//match installable firefox archives
 							//add file to downloads table if not exists
 							var statement = mDBConn.createStatement("INSERT INTO downloads (package,filepath,checksum,installed) VALUES (:media_value,:mediapath_value,'no','no')");
-							mDBConn.beginTransaction();
 							statement.params.media_value = media;
 							statement.params.mediapath_value = mediapath;
 							statement.executeStep();
-							mDBConn.commitTransaction();
 							statement.reset();
 						}
 					}
@@ -496,10 +496,8 @@ var foxtesterInterface = {
 							//delete file from downloads
 							var media = media.replace(/\.part/,"");
 							var statement = mDBConn.createStatement("DELETE FROM downloads WHERE package= :media_value");
-							mDBConn.beginTransaction();
 							statement.params.media_value = media;
 							statement.executeStep();
-							mDBConn.commitTransaction();
 							statement.reset();
 						}
 					}
@@ -507,7 +505,6 @@ var foxtesterInterface = {
 
 				//fetch data from downloads table
 				var statement = mDBConn.createStatement("SELECT * FROM downloads ORDER BY package desc");
-				mDBConn.beginTransaction();
 				while (statement.executeStep()) {
 					//fetch row values
 					let package = statement.row.package;

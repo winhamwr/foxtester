@@ -27,13 +27,23 @@ var foxtesterFirstrun = {
 
 		updateInstall: function(aVersion){//check version and perform updates
 			
-			//access preferences interface
-			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("general.useragent.");
-			
-			//get browser language and set pref
-			var language = this.prefs.getCharPref("locale");
+			//get browser language
+			var language;
+			try{
+				language = navigator.language;
+			}catch(e){
+
+				//access preferences interface
+				this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefService)
+				.getBranch("general.useragent.");
+
+				language = this.prefs.getCharPref("locale");
+				
+				if(language === "chrome://global/locale/intl.properties"){
+					language = "en-US";
+				}
+			}
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]

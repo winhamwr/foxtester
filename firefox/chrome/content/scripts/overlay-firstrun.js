@@ -26,11 +26,22 @@ var foxtesterFirstrun = {
 		},
 
 		updateInstall: function(aVersion){//check version and perform updates
+			
+			//access preferences interface
+			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("general.useragent.");
+			
+			//get browser language and set pref
+			var language = this.prefs.getCharPref("locale");
 
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.foxtester.");
+			
+			//set language
+			this.prefs.setCharPref("language",language);
 
 			//access database interface
 			var database = Components.classes['@mozilla.org/file/directory_service;1']
@@ -206,10 +217,6 @@ var foxtesterFirstrun = {
 				if(!profilefolder.exists() || !profilefolder.isDirectory()) {
 					profilefolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);
 				}
-
-				//get browser language and set pref
-				var language = navigator.language;
-				this.prefs.setCharPref("language",language);
 
 				//get architecture and set pref
 				var osString = Components.classes["@mozilla.org/network/protocol;1?name=http"]

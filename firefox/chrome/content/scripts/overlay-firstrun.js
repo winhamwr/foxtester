@@ -30,21 +30,14 @@ var foxtesterFirstrun = {
 			//get browser language
 			var language;
 			try{
-				language = navigator.language;
+			    language = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+	            .getService(Components.interfaces.nsILocaleService)
+	            .getSystemLocale()
+	            .getCategory("NSILOCALE_MESSAGES");
 			}catch(e){
-
-				//access preferences interface
-				this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-				.getService(Components.interfaces.nsIPrefService)
-				.getBranch("general.useragent.");
-
-				language = this.prefs.getCharPref("locale");
-				
-				if(language === "chrome://global/locale/intl.properties"){
-					language = "en-US";
-				}
+				language = "en-US";
 			}
-
+			
 			//access preferences interface
 			this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)

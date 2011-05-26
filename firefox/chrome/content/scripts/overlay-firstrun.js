@@ -27,7 +27,7 @@ var foxtesterFirstrun = {
 
 		updateInstall: function(aVersion){//check version and perform updates
 			
-			//get browser language
+			//get system language
 			var language;
 			try{
 			    language = Components.classes["@mozilla.org/intl/nslocaleservice;1"]

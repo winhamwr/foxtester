@@ -12,7 +12,7 @@
 		<em:description>Install and launch multiple versions of Firefox, Fennec, Seamonkey and Thunderbird while using the default installations and without affecting the default user profiles.</em:description>
 		<em:creator>webgapps</em:creator>
 		<em:contributor>chocolateboy</em:contributor>
-		<em:homepageURL>http://www.webgapps.org/addons/foxtester</em:homepageURL>
+		<em:homepageURL>http://www.webgapps.org/add-ons/foxtester</em:homepageURL>
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>

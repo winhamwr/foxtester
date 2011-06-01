@@ -30,10 +30,9 @@ var foxtesterFirstrun = {
 			//get system language
 			var language;
 			try{
-			    language = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
-	            .getService(Components.interfaces.nsILocaleService)
-	            .getSystemLocale()
-	            .getCategory("NSILOCALE_MESSAGES");
+			    language = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
+                .getService(Components.interfaces.nsIXULChromeRegistry)
+                .getSelectedLocale("global");
 			}catch(e){
 				language = "en-US";
 			}
@@ -256,20 +255,19 @@ var foxtesterFirstrun = {
 						//reset pref
 						this.prefs.setCharPref("firefoxcentralversion",firefoxcentralversion);
 					}
-					//*****************get latest-mozilla-central version for determining menu icons**********************
+					//*****************get latest-mozilla-aurora version for determining menu icons**********************
 					var firefoxauroraversion = this.prefs.getCharPref("firefoxaurorapath").replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"");
 					if(firefoxauroraversion !== "empty"){
 						//reset pref
 						this.prefs.setCharPref("firefoxauroraversion",firefoxauroraversion);
 					}
-					//*****************get latest-mozilla-central version for determining menu icons**********************
+					//*****************get latest-mozilla-beta version for determining menu icons**********************
 					var firefoxbetaversion = this.prefs.getCharPref("firefoxbetapath").replace(/.*\//g,"").replace(/\.[a-z]{2}-[A-Z]{2}\..*/,"").replace(/\.[a-z]{2}\..*/,"").replace(/.*-/,"").replace(/\.tar\.bz2/,"");
 					if(firefoxbetaversion !== "empty"){
 						//reset pref
 						this.prefs.setCharPref("firefoxbetaversion",firefoxbetaversion);
 					}
 
-					//*****************get latest-mozilla-central for generating download menu**********************
 					//reset pref
 					this.prefs.setCharPref("firefoxcentralpath","empty");
 					this.prefs.setCharPref("firefoxaurorapath","empty");

@@ -863,13 +863,13 @@ var foxtesterInterface = {
 			if(firefox === true){
 				//hide browse menu
 				document.getElementById("foxtester-browse-selected-releases-firefox").hidden = false;
-				document.getElementById("foxtester-browse-selected-beta-firefox").hidden = false;
+				//document.getElementById("foxtester-browse-selected-beta-firefox").hidden = false;
 				document.getElementById("foxtester-browse-selected-aurora-firefox").hidden = false;
 				document.getElementById("foxtester-browse-selected-central-firefox").hidden = false;
 				document.getElementById("foxtester-separator-firefox").hidden = false;
 			}else{
 				document.getElementById("foxtester-browse-selected-releases-firefox").hidden = true;
-				document.getElementById("foxtester-browse-selected-beta-firefox").hidden = true;
+				//document.getElementById("foxtester-browse-selected-beta-firefox").hidden = true;
 				document.getElementById("foxtester-browse-selected-aurora-firefox").hidden = true;
 				document.getElementById("foxtester-browse-selected-central-firefox").hidden = true;
 				document.getElementById("foxtester-separator-firefox").hidden = true;

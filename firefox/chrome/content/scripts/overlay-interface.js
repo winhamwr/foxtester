@@ -151,7 +151,7 @@ var foxtesterInterface = {
 			downloadmenupopup.appendChild(downloadnewvbox);
 			var downloadmenuitem;
 
-			if(firefox === true){
+			if(watchedfolder !== "" && firefox === true){
 
 				//get download links and append menu
 				var firefoxcentralfileuri = this.prefs.getCharPref("firefoxcentralpath");
@@ -170,22 +170,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						firefoxcentralcurrentdownload.initWithPath(watchedfolder);
 						firefoxcentralcurrentdownload.append(firefoxcentralfilename);
+						
+						if(!firefoxcentralcurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-central");
+							downloadmenuitem.setAttribute("tooltiptext","Firefox");
+							downloadmenuitem.setAttribute("filepath",firefoxcentralfileuri);
+							downloadmenuitem.setAttribute("filename",firefoxcentralfilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfirefoxcentraldownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!firefoxcentralcurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-central");
-						downloadmenuitem.setAttribute("tooltiptext","Firefox");
-						downloadmenuitem.setAttribute("filepath",firefoxcentralfileuri);
-						downloadmenuitem.setAttribute("filename",firefoxcentralfilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-nightly16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfirefoxcentraldownload = true;
 					}
 				}else{
 					showfirefoxcentraldownload = false;
@@ -200,22 +200,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						firefoxauroracurrentdownload.initWithPath(watchedfolder);
 						firefoxauroracurrentdownload.append(firefoxaurorafilename);
+						
+						if(!firefoxauroracurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
+							downloadmenuitem.setAttribute("tooltiptext","Firefox");
+							downloadmenuitem.setAttribute("filepath",firefoxaurorafileuri);
+							downloadmenuitem.setAttribute("filename",firefoxaurorafilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfirefoxauroradownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!firefoxauroracurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
-						downloadmenuitem.setAttribute("tooltiptext","Firefox");
-						downloadmenuitem.setAttribute("filepath",firefoxaurorafileuri);
-						downloadmenuitem.setAttribute("filename",firefoxaurorafilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-aurora16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfirefoxauroradownload = true;
 					}
 				}else{
 					showfirefoxauroradownload = false;
@@ -230,22 +230,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						firefoxbetacurrentdownload.initWithPath(watchedfolder);
 						firefoxbetacurrentdownload.append(firefoxbetafilename);
+						
+						if(!firefoxbetacurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-beta");
+							downloadmenuitem.setAttribute("tooltiptext","Firefox");
+							downloadmenuitem.setAttribute("filepath",firefoxbetafileuri);
+							downloadmenuitem.setAttribute("filename",firefoxbetafilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfirefoxbetadownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!firefoxbetacurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-beta");
-						downloadmenuitem.setAttribute("tooltiptext","Firefox");
-						downloadmenuitem.setAttribute("filepath",firefoxbetafileuri);
-						downloadmenuitem.setAttribute("filename",firefoxbetafilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/firefox-beta16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfirefoxbetadownload = true;
 					}
 				}else{
 					showfirefoxbetadownload = false;
@@ -257,7 +257,7 @@ var foxtesterInterface = {
 				showfirefoxbetadownload = false;
 			}
 
-			if(fennec === true){
+			if(watchedfolder !== "" && fennec === true){
 
 				//get download links and append menu
 				var fenneccentralfileuri = this.prefs.getCharPref("fenneccentralpath");
@@ -276,22 +276,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						fenneccentralcurrentdownload.initWithPath(watchedfolder);
 						fenneccentralcurrentdownload.append(fenneccentralfilename);
+						
+						if(!fenneccentralcurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-central");
+							downloadmenuitem.setAttribute("tooltiptext","Fennec");
+							downloadmenuitem.setAttribute("filepath",fenneccentralfileuri);
+							downloadmenuitem.setAttribute("filename",fenneccentralfilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfenneccentraldownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!fenneccentralcurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-central");
-						downloadmenuitem.setAttribute("tooltiptext","Fennec");
-						downloadmenuitem.setAttribute("filepath",fenneccentralfileuri);
-						downloadmenuitem.setAttribute("filename",fenneccentralfilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfenneccentraldownload = true;
 					}
 				}else{
 					showfenneccentraldownload = false;
@@ -306,22 +306,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						fennecauroracurrentdownload.initWithPath(watchedfolder);
 						fennecauroracurrentdownload.append(fennecaurorafilename);
+						
+						if(!fennecauroracurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
+							downloadmenuitem.setAttribute("tooltiptext","Fennec");
+							downloadmenuitem.setAttribute("filepath",fennecaurorafileuri);
+							downloadmenuitem.setAttribute("filename",fennecaurorafilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfennecauroradownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!fennecauroracurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-aurora");
-						downloadmenuitem.setAttribute("tooltiptext","Fennec");
-						downloadmenuitem.setAttribute("filepath",fennecaurorafileuri);
-						downloadmenuitem.setAttribute("filename",fennecaurorafilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfennecauroradownload = true;
 					}
 				}else{
 					showfennecauroradownload = false;
@@ -336,22 +336,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						fennecbetacurrentdownload.initWithPath(watchedfolder);
 						fennecbetacurrentdownload.append(fennecbetafilename);
+						
+						if(!fennecbetacurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-mozilla-beta");
+							downloadmenuitem.setAttribute("tooltiptext","Fennec");
+							downloadmenuitem.setAttribute("filepath",fennecbetafileuri);
+							downloadmenuitem.setAttribute("filename",fennecbetafilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showfennecbetadownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!fennecbetacurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-mozilla-beta");
-						downloadmenuitem.setAttribute("tooltiptext","Fennec");
-						downloadmenuitem.setAttribute("filepath",fennecbetafileuri);
-						downloadmenuitem.setAttribute("filename",fennecbetafilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/fennec16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showfennecbetadownload = true;
 					}
 				}else{
 					showfennecbetadownload = false;
@@ -363,7 +363,7 @@ var foxtesterInterface = {
 				showfennecbetadownload = false;
 			}
 
-			if(thunderbird === true){
+			if(watchedfolder !== "" && thunderbird === true){
 
 				//get download links and append menu
 				var thunderbirdcentralfileuri = this.prefs.getCharPref("thunderbirdcentralpath");
@@ -380,22 +380,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						thunderbirdcentralcurrentdownload.initWithPath(watchedfolder);
 						thunderbirdcentralcurrentdownload.append(thunderbirdcentralfilename);
+						
+						if(!thunderbirdcentralcurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-comm-central");
+							downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
+							downloadmenuitem.setAttribute("filepath",thunderbirdcentralfileuri);
+							downloadmenuitem.setAttribute("filename",thunderbirdcentralfilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showthunderbirdcentraldownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!thunderbirdcentralcurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-comm-central");
-						downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
-						downloadmenuitem.setAttribute("filepath",thunderbirdcentralfileuri);
-						downloadmenuitem.setAttribute("filename",thunderbirdcentralfilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showthunderbirdcentraldownload = true;
 					}
 				}else{
 					showthunderbirdcentraldownload = false;
@@ -410,22 +410,22 @@ var foxtesterInterface = {
 						.createInstance(Components.interfaces.nsILocalFile);
 						thunderbirdauroracurrentdownload.initWithPath(watchedfolder);
 						thunderbirdauroracurrentdownload.append(thunderbirdaurorafilename);
+						
+						if(!thunderbirdauroracurrentdownload.exists()){
+
+							downloadmenuitem = document.createElement("menuitem");
+							downloadmenuitem.setAttribute("label","latest-comm-aurora");
+							downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
+							downloadmenuitem.setAttribute("filepath",thunderbirdaurorafileuri);
+							downloadmenuitem.setAttribute("filename",thunderbirdaurorafilename);
+							downloadmenuitem.setAttribute("class","menuitem-iconic");
+							downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
+							downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
+							downloadnewvbox.appendChild(downloadmenuitem);
+							showthunderbirdauroradownload = true;
+						}
 					}catch(e){
 						//do nothing
-					}
-
-					if(!thunderbirdauroracurrentdownload.exists()){
-
-						downloadmenuitem = document.createElement("menuitem");
-						downloadmenuitem.setAttribute("label","latest-comm-aurora");
-						downloadmenuitem.setAttribute("tooltiptext","Thunderbird");
-						downloadmenuitem.setAttribute("filepath",thunderbirdaurorafileuri);
-						downloadmenuitem.setAttribute("filename",thunderbirdaurorafilename);
-						downloadmenuitem.setAttribute("class","menuitem-iconic");
-						downloadmenuitem.setAttribute("image","chrome://foxtester/skin/miramar16.png");
-						downloadmenuitem.addEventListener('command',function (){foxtesterFileManager.downloadFile(this.getAttribute('filepath'),this.getAttribute('filename'),'verbose');},false);
-						downloadnewvbox.appendChild(downloadmenuitem);
-						showthunderbirdauroradownload = true;
 					}
 				}else{
 					showthunderbirdauroradownload = false;

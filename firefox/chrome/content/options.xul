@@ -30,7 +30,7 @@
 					<label value="&WatchedFolder;: " /> 
 					<textbox preference="pref_watchedfolder" id="watchedfolder" readonly="true" size="30"/>
 					<vbox>
-						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onmouseover="this.style.cursor='pointer';" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" style="cursor:pointer;" onclick="foxtesterOptions.openFolder('&SelectFolder;','watchedfolder');"/>
 					</vbox>
 				</hbox>
 				<spacer height="10" flex="0"/>
@@ -38,7 +38,7 @@
 					<label value="&PluginFolder;: " /> 
 					<textbox preference="pref_pluginfolder" id="pluginfolder" readonly="true" size="30"/>
 					<vbox>
-						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" onmouseover="this.style.cursor='pointer';" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectFolder;" style="cursor:pointer;" onclick="foxtesterOptions.openFolder('&SelectFolder;','pluginfolder');"/>
 					</vbox>
 				</hbox>
 				<spacer height="10" flex="0"/>
@@ -46,7 +46,7 @@
 					<label value="&Terminal;: " />
 					<textbox preference="pref_terminal" id="terminal" size="30"/>
 					<vbox>
-						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectProgram;" onmouseover="this.style.cursor='pointer';" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
+						<image src="chrome://foxtester/skin/search24.png" tooltiptext="&SelectProgram;" style="cursor:pointer;" onclick="foxtesterOptions.openFile('&SelectProgram;');"/>
 					</vbox>
 				</hbox>
 			</groupbox>
